@@ -87,7 +87,7 @@
           />
         </el-form-item>
         <el-form-item label="字典值" prop="value">
-          <el-input-number
+          <el-input
             v-model.number="formData.value"
             step-strictly
             :step="1"

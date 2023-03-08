@@ -69,7 +69,6 @@
         <el-select
           v-model="middleDate.dictType"
           style="width:100%"
-          :disabled="middleDate.fieldType!=='int'"
           placeholder="请选择字典"
           clearable
         >

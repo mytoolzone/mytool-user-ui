@@ -36,21 +36,39 @@
         @selection-change="handleSelectionChange"
         >
         <el-table-column type="selection" width="55" />
-        <el-table-column align="left" label="日期" width="180">
+        <!-- <el-table-column align="left" label="日期" width="180">
             <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
+        </el-table-column> -->
+        <!-- <el-table-column align="left" label="开发者" prop="userId" width="120" /> -->
+        <el-table-column align="left" label="名称" prop="name" width="120" />
+        <!-- <el-table-column align="left" label="图标" prop="icon" width="120" /> -->
+        <el-table-column align="left" label="标签" prop="tags" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.tags,tool_tagOptions) }}
+            </template>
         </el-table-column>
-        <el-table-column sortable align="left" label="开发者" prop="userId" width="120" />
-        <el-table-column sortable align="left" label="名称" prop="name" width="120" />
-        <el-table-column align="left" label="图标" prop="icon" width="120" />
-        <el-table-column align="left" label="标签" prop="tags" width="120" />
-        <el-table-column align="left" label="类型 code/word/media" prop="type" width="120" />
-        <el-table-column align="left" label="属性 outer/jsonui/upload/api" prop="attr" width="120" />
-        <el-table-column align="left" label="描述信息" prop="desc" width="120" />
+        <el-table-column align="left" label="类型" prop="type" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.type,tool_typeOptions) }}
+            </template>
+        </el-table-column>
+        <el-table-column align="left" label="属性" prop="attr" width="120">
+            <template #default="scope">
+            {{ filterDict(scope.row.attr,tool_attrOptions) }}
+            </template>
+        </el-table-column>
+        <!-- <el-table-column align="left" label="描述信息" prop="desc" width="120" /> -->
         <el-table-column align="left" label="工具价格" prop="price" width="120" />
-        <el-table-column align="left" label="按钮组">
+        <el-table-column align="left" label="操作" width="240">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updateToolsFunc(scope.row)">变更</el-button>
             <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
+            <el-button
+              icon="document"
+              type="primary"
+              link
+              @click="toDetail(scope.row)"
+            >详情</el-button>
             </template>
         </el-table-column>
         </el-table>
@@ -68,9 +86,6 @@
     </div>
     <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" title="弹窗操作">
       <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="80px">
-        <el-form-item label="开发者:"  prop="userId" >
-          <el-input v-model.number="formData.userId" :clearable="true" placeholder="请输入" />
-        </el-form-item>
         <el-form-item label="名称:"  prop="name" >
           <el-input v-model="formData.name" :clearable="true"  placeholder="请输入" />
         </el-form-item>
@@ -78,19 +93,42 @@
           <el-input v-model="formData.icon" :clearable="true"  placeholder="请输入" />
         </el-form-item>
         <el-form-item label="标签:"  prop="tags" >
-          <el-input v-model="formData.tags" :clearable="true"  placeholder="请输入" />
+          <el-select v-model="formData.tags" placeholder="请选择" style="width:100%">
+            <el-option 
+              v-for="item in tool_tagOptions"
+              :key="item.value"
+              :label="`${item.label}(${item.value})`"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="类型 code/word/media:"  prop="type" >
-          <el-input v-model="formData.type" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="类型:"  prop="type" >
+          <!-- <el-input v-model="formData.type" :clearable="true"  placeholder="请输入" /> -->
+          <el-select v-model="formData.type" placeholder="请选择" style="width:100%">
+            <el-option 
+              v-for="item in tool_typeOptions"
+              :key="item.value"
+              :label="`${item.label}(${item.value})`"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="属性 outer/jsonui/upload/api:"  prop="attr" >
-          <el-input v-model="formData.attr" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="属性:"  prop="attr" >
+          <!-- <el-input v-model="formData.attr" :clearable="true"  placeholder="请输入" /> -->
+          <el-select v-model="formData.attr" placeholder="请选择" style="width:100%">
+            <el-option 
+              v-for="item in tool_attrOptions"
+              :key="item.value"
+              :label="`${item.label}(${item.value})`"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
-        <el-form-item label="描述信息:"  prop="desc" >
-          <el-input v-model="formData.desc" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="简介:"  prop="desc" >
+          <el-input type="textarea" v-model="formData.desc" :clearable="true"  placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="工具价格:"  prop="price" >
-          <el-input v-model.number="formData.price" :clearable="true" placeholder="请输入" />
+        <el-form-item label="价格(元):"  prop="price" >
+          <el-input-number v-model.number="formData.price" :clearable="true" placeholder="请输入" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -119,12 +157,18 @@ import {
   getToolsList
 } from '@/api/tools'
 
+
 // 全量引入格式化工具 请按需保留
 import { getDictFunc, formatDate, formatBoolean, filterDict } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 // 自动化生成的字典（可能为空）以及字段
+const tool_typeOptions = ref([])
+const tool_attrOptions = ref([])
+const tool_tagOptions = ref([])
 const formData = ref({
         userId: 0,
         name: '',
@@ -138,11 +182,6 @@ const formData = ref({
 
 // 验证规则
 const rule = reactive({
-               userId : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
                name : [{
                    required: true,
                    message: '',
@@ -164,6 +203,16 @@ const rule = reactive({
                    trigger: ['input','blur'],
                }],
                attr : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               desc : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               price : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
@@ -222,6 +271,13 @@ getTableData()
 
 // 获取需要的字典 可能为空 按需保留
 const setOptions = async () =>{
+    tool_typeOptions.value = await getDictFunc('tool_type')
+    tool_attrOptions.value = await getDictFunc('tool_attr')
+    tool_tagOptions.value = await getDictFunc('tool_tag')
+
+    console.log( tool_typeOptions.value )
+    console.log( tool_attrOptions.value )
+    console.log( tool_tagOptions.value )
 }
 
 // 获取需要的字典 可能为空 按需保留
@@ -355,6 +411,17 @@ const enterDialog = async () => {
                 getTableData()
               }
       })
+}
+
+
+const toDetail = (row) => {
+  console.log('row', row)
+  router.push({
+    name: 'toolsEdit',
+    query: {
+      id: row.ID,
+    },
+  })
 }
 </script>
 

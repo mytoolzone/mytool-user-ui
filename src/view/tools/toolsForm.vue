@@ -14,16 +14,16 @@
         <el-form-item label="标签:" prop="tags">
           <el-input v-model="formData.tags" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="类型 code/word/media:" prop="type">
+        <el-form-item label="类型:" prop="type">
           <el-input v-model="formData.type" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="属性 outer/jsonui/upload/api:" prop="attr">
+        <el-form-item label="属性:" prop="attr">
           <el-input v-model="formData.attr" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="描述信息:" prop="desc">
+        <el-form-item label="简介:" prop="desc">
           <el-input v-model="formData.desc" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="工具价格:" prop="price">
+        <el-form-item label="价格:" prop="price">
           <el-input v-model.number="formData.price" :clearable="true" placeholder="请输入" />
         </el-form-item>
         <el-form-item>
@@ -57,6 +57,9 @@ const route = useRoute()
 const router = useRouter()
 
 const type = ref('')
+const tool_typeOptions = ref([])
+const tool_attrOptions = ref([])
+const tool_tagOptions = ref([])
 const formData = ref({
             userId: 0,
             name: '',
@@ -69,11 +72,6 @@ const formData = ref({
         })
 // 验证规则
 const rule = reactive({
-               userId : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
                name : [{
                    required: true,
                    message: '',
@@ -99,6 +97,16 @@ const rule = reactive({
                    message: '',
                    trigger: ['input','blur'],
                }],
+               desc : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               price : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
 })
 
 const elFormRef = ref()
@@ -115,6 +123,9 @@ const init = async () => {
     } else {
       type.value = 'create'
     }
+    tool_typeOptions.value = await getDictFunc('tool_type')
+    tool_attrOptions.value = await getDictFunc('tool_attr')
+    tool_tagOptions.value = await getDictFunc('tool_tag')
 }
 
 init()
