@@ -1,6 +1,7 @@
 <template>
   <div style="height:80vh">
-    <iframe width="100%" height="100%" :src="`${basePath}:${basePort}/form-generator/#/`" frameborder="0" />
+    <!-- <iframe width="100%" height="100%" :src="`${basePath}:${basePort}/form-generator/#/`" frameborder="0" /> -->
+    <iframe width="100%" height="100%" src="http://tools.mytool.zone/form-generator/index.html#/" frameborder="0" />
   </div>
 </template>
 

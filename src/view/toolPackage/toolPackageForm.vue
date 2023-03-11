@@ -11,14 +11,14 @@
 
         <el-form-item prop="uiData">
           <slot name="form-item"> 功能表单 -- &nbsp;
-           <el-link type="success" href="/#/layout/systemTools/formCreate" target="blank">创建表单<i class="el-icon-view el-icon--right"></i> </el-link>
+           <el-link type="success" href="http://tools.mytool.zone/form-generator/index.html#/" target="blank">创建表单<i class="el-icon-view el-icon--right"></i> </el-link>
           </slot>
           <el-input type="textarea" v-model="formData.uiData" :clearable="true" placeholder="请输入" />
         </el-form-item>
 
         <el-form-item prop="config">
           <slot name="form-item"> 配置表单 -- &nbsp;
-           <el-link type="success" href="/#/layout/systemTools/formCreate" target="blank">创建表单<i class="el-icon-view el-icon--right"></i> </el-link>
+           <el-link type="success" href="http://tools.mytool.zone/form-generator/index.html#/" target="blank">创建表单<i class="el-icon-view el-icon--right"></i> </el-link>
           </slot>
           <el-input type="textarea" v-model="formData.config" :clearable="true" placeholder="请输入" />
         </el-form-item>
