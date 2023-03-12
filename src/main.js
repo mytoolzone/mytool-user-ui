@@ -29,6 +29,12 @@ Nprogress.start()
  * 无需在这块结束，会在路由中间件中结束此块内容
  * */
 
+// 导入form-create
+import formCreate from '@form-create/element-ui'
+import FcDesigner from '@form-create/designer'
+
+
+
 const app = createApp(App)
 app.config.productionTip = false
 
@@ -38,5 +44,8 @@ app
   .use(auth)
   .use(router)
   .mount('#app')
+// 导入form-create
+app.use(formCreate)
+app.use(FcDesigner)
 
 export default app
