@@ -146,7 +146,6 @@ const previewPosition = ref('')
 
 const FcDesignerRule = '[{"type":"input","field":"cuk5qqdw3umc","title":"输入框","info":"","_fc_drag_tag":"input","hidden":false,"display":true}]';
 
-
 const currentInstance = getCurrentInstance()
 const designer = ref(null)
 
@@ -212,17 +211,15 @@ const preview = (position ,data) => {
 const getFormDesignerJson = (data) => {
   console.log('sumbitForm1提交数据：', data)
   const json = currentInstance.refs.designer.getJson()
-  const jsonStr = JSON.stringify(json)
   // alert(json)
   switch(previewPosition.value) {
     case 'uiData':
-      formData.value.uiData = jsonStr
+      formData.value.uiData = json
       break;
     case 'config':
-      formData.value.config = jsonStr
+      formData.value.config = json
       break;
   }
-
   previewDialogVisible.value = false
 }
 
