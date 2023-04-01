@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <nav class="navbar">
+    <!-- <nav class="navbar">
       <a href="/" class="logo">
         <a data-pswp-width='512' data-pswp-height='512' target='_blank' href="https://tools.mytool.zone/logo.png"><img src="https://tools.mytool.zone/logo.png" alt="ToolsDar logo" /></a>
         <span class="title">ToolsDar</span>
@@ -12,6 +12,9 @@
         <li><a href="#">优惠信息</a></li>
         <li><a href="#">关于我们</a></li>
       </ul>
+    </nav> -->
+    <nav class="navbar">
+      <top></top>
     </nav>
 
     <nav class="sidebar">
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import Top from './components/header.vue'
 import Sidebar from './components/sidebar.vue'
 import Search from './components/search.vue'
 import Cardlist from './components/cardlist.vue'
@@ -35,7 +39,8 @@ export default {
   components: {
     Sidebar,
     Search,
-    Cardlist
+    Cardlist,
+    Top
   },
   data() {
     return {
@@ -54,75 +59,22 @@ export default {
 .navbar {
   background-color: #fff;
   width: 100%;
-  height: 60px;
+  height: 80px;
   position: fixed;
-  z-index: 999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
 }
 
-.navbar .logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #2f3542;
-}
-
-.navbar .logo img {
-  height: 40px;
-  margin-right: 8px;
-}
-
-.navbar .title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  margin-left: auto; /* 菜单靠右对齐 */
-}
-
-.menu li {
-  margin-right: 32px;
-}
-
-.menu li:last-child {
-  margin-right: 0;
-}
-
-.menu li a {
-  color: #2f3542;
-  font-size: 16px;
-  text-decoration: none;
-  padding: 12px;
-  transition: all 0.3s ease-in-out;
-}
-
-.menu li a:hover {
-  color: #1e90ff;
-}
 
 .sidebar {
-  background-color: #2f3542;
-  width: 240px;
   height: 100vh;
-  position: fixed;
-  z-index: 0;
-  top: 60px;
-  padding-top: 20px;
+  margin: 0px;
+  padding-top: 80px;
+  width: 160px;
 }
 
 .main-content {
-  margin-left: 240px; /* 让主要内容区域腾出侧边栏的宽度 */
-
-  padding: 60px;
+  width: calc(100vw - 160px);
+  margin: 0px;
+  background-color: #1A1B1D;
   padding-top: 100px;
   font-size: 24px;
   line-height: 1.5;

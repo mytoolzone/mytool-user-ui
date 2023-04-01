@@ -6,7 +6,7 @@ const routes = [{
 },
 {
   path: '/',
-  name: 'public',
+  name: 'Public',
   component: () => import('@/view/public/index.vue')
 },
 {

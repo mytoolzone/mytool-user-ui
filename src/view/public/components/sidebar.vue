@@ -1,97 +1,114 @@
 <template>
-  <div class="wrapper">
-    <nav class="sidebar">
-      <ul>
-        <li class="logo"><a href="#">ToolsDar</a></li>
-        <li><a href="#">在线工具</a></li>
-        <li><a href="#">代码编辑器</a></li>
-        <li>
-          <a href="#">API 工具</a>
-          <!-- 添加二级菜单 -->
-          <ul>
-            <li><a href="#">API1</a></li>
-            <li><a href="#">API2</a></li>
-            <li><a href="#">API3</a></li>
-          </ul>
-        </li>
-        <li><a href="#">设计工具</a></li>
-        <li><a href="#">常用工具</a></li>
-        <li><a href="#">关于我们</a></li>
-      </ul>
-    </nav>
+ <div class="mymenu-wrap"> 
+  <el-menu
+    active-text-color="#EFEFEF"
+    background-color="#272929"
+    class="el-menu-vertical-demo mymenu-top"
+    default-active="1-1"
+    text-color="#BFC2C8"
+    @open="handleOpen"
+    @close="handleClose"
+  >
+    <el-sub-menu index="1">
+      <template #title>
+        <el-icon><location /></el-icon>
+        <span>Navigator One</span>
+      </template>
+        <el-menu-item index="1-1">item one</el-menu-item>
+        <el-menu-item index="1-2">item two</el-menu-item>
+        <el-menu-item index="1-3">item three</el-menu-item>
+    </el-sub-menu>
 
-    <div class="main-content">
-      <!-- 这里是页面主要内容 -->
-      <h1>欢迎来到 ToolsDar</h1>
-      <p>这里是一个在线工具集合网站，提供各种实用的工具。</p>
-    </div>
-  </div>
+    <el-sub-menu index="1">
+      <template #title>
+        <el-icon><location /></el-icon>
+        <span>Navigator One</span>
+      </template>
+        <el-menu-item index="1-1">item one</el-menu-item>
+        <el-menu-item index="1-2">item two</el-menu-item>
+        <el-menu-item index="1-3">item three</el-menu-item>
+    </el-sub-menu>
+ 
+  </el-menu>
+
+  <el-menu
+    active-text-color="#EFEFEF"
+    background-color="#272929"
+    class="el-menu-vertical-demo mymenu-bottom"
+    default-active="1-1"
+    text-color="#BFC2C8"
+    @open="handleOpen"
+    @close="handleClose"
+  >
+    <el-menu-item index="1">
+      <template #title>
+        <el-icon><location /></el-icon>
+        <span>关于我们</span>
+      </template>
+    </el-menu-item>
+        <el-menu-item index="1">
+      <template #title>
+        <el-icon><location /></el-icon>
+        <span>留言交流</span>
+      </template>
+    </el-menu-item>
+  </el-menu>
+
+ </div>
+ 
 </template>
 
-<script>
-export default {
-  name: 'MyPage',
-  data() {
-    return {};
-  },
-};
+<script lang="ts" setup>
+import {
+  Document,
+  Menu as IconMenu,
+  Location,
+  Setting,
+} from '@element-plus/icons-vue'
+const handleOpen = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
+const handleClose = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
 </script>
 
-<style scoped>
-/* 基本样式 */
-.wrapper {
-  display: flex;
-  flex-direction: row;
-}
+<style  scoped>
+  .mymenu-wrap {
+    margin: 0%;
+    padding: 0px;
+    border: none;
+  }
+  .mymenu-top {
+     flex: 8;
+     height: calc(100vh - 80px - 120px) ;
+     overflow-y:scroll;
+         border-right: none;
 
-.sidebar {
-  background-color: #2f3542;
-  width: 240px;
-  height: 100vh;
-  position: fixed;
-  z-index: 0;
-  top: 0;
-  padding-top: 20px;
-}
+  }
+  .mymenu-top::-webkit-scrollbar {
+   /*高宽分别对应横竖滚动条的尺寸*/
+    width: 5px; 
+ 
+  }
 
-.sidebar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+  .mymenu-top::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #4F5050;
+    height: 60px !important;
+  }
+  .mymenu-top::-webkit-scrollbar-thumb:hover {
+    border-radius: 2px;
+    background:  #EF3842;
+  }
+  .mymenu-top::-webkit-scrollbar-track-piece {
+    background-color: #3d3b3b !important;
+    border-radius: 2px;
+  }
 
-.sidebar li {
-  margin-bottom: 16px;
-}
-
-.sidebar li a {
-  display: block;
-  color: #fff;
-  font-size: 16px;
-  text-decoration: none;
-  padding: 12px;
-  border-left: 4px solid transparent;
-  transition: all 0.3s ease-in-out;
-}
-
-.sidebar li a:hover {
-  border-left: 4px solid #1e90ff;
-  background-color: rgba(30, 144, 255, 0.1);
-}
-
-/* 添加二级菜单的样式 */
-.sidebar li ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  margin-left: 24px; /* 缩进以示层次感 */
-}
-
-.sidebar li ul li {
-  margin-bottom: 8px;
-}
-
-.sidebar li ul li a {
-  font-size: 14px;
-}
+  .mymenu-bottom{
+     border-top: 1px solid #383d3f!important;
+     border-right: none;
+     height: 120px;
+  }
 </style>

@@ -1,88 +1,154 @@
 <template>
   <div class="card-list">
-    <Card v-for="(card, index) in cards" :key="index" :title="card.title" :image="card.image" :description="card.description" :tags="card.tags" />
+    <div v-for="(item, index) in items" :key="index" class="card">
+      <div> 
+          <div class="image-container">
+            <a data-pswp-width='512' data-pswp-height='512' target='_blank' href="item.imageUrl">
+              <img class="card-cover" :src="item.imageUrl" alt="card image" />
+            </a>
+          </div>
+         <div class="content-container">
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.description }}</p>
+         </div>
+      </div>
+      <div class="tags">
+         <span v-for="(tag, index) in item.tags" :key="index" class="tag">{{ tag }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Card from './Card.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Card
-  },
   data() {
     return {
-      cards: [
+      items: [
         {
-          title: 'Card 1',
-          image: 'https://via.placeholder.com/150',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          tags: ['Tag 1', 'Tag 2', 'Tag 3']
+          title: 'Card Title 1',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
+          tags: ['Tag 1', 'Tag 2'],
         },
         {
-          title: 'Card 2',
-          image: 'https://via.placeholder.com/150',
-          description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          tags: ['Tag 4', 'Tag 5']
+          title: 'Card Title 2',
+          description:
+            'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
+          tags: ['Tag 3'],
         },
         {
-          title: 'Card 3',
-          image: 'https://via.placeholder.com/150',
-          description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          tags: ['Tag 6', 'Tag 7', 'Tag 8', 'Tag 9']
-        }
-      ]
-    }
-  }
-}
+          title: 'Card Title 3',
+          description:
+            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
+          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
+        },
+                {
+          title: 'Card Title 3',
+          description:
+            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
+          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
+        },
+                {
+          title: 'Card Title 3',
+          description:
+            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
+          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
+        },
+                {
+          title: 'Card Title 3',
+          description:
+            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
+          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
+        },
+      ],
+    };
+  },
+};
 </script>
 
-<style lang="scss">
+<style scoped>
 .card-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 16px;
+  padding-left: 15px;
+  /*justify-content: space-around;*/
+}
 
-  .card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 20px;
-    width: calc(33.33% - 10px);
+.card {
+  background-color: #272929;
+  color: #c6c9cf;
+  width: 250px;
+  height: 90px;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 1px 1px 8px rgba(20, 20, 20, 0.9);
+  transition: all 0.1s ease-out;
 
-    img {
-      width: 100%;
-      height: auto;
-      margin-bottom: 10px;
-    }
+}
 
-    h3 {
-      margin: 0;
-      font-size: 20px;
-      font-weight: bold;
-    }
+.card:hover {
+  /*box-shadow: 4px 4px 12px rgba(150, 145, 137, 0.688);*/
+  transform: translate(0,-5px);
+  color: #fafbfd;
+}
 
-    p {
-      margin: 10px 0;
-      font-size: 14px;
-    }
+.image-container {
+  width: 48px;
+  margin-right: 16px;
+  float: left;
+}
 
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
+.card-cover {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
 
-      .tag {
-        background-color: #ccc;
-        border-radius: 3px;
-        color: #fff;
-        font-size: 12px;
-        padding: 2px 6px;
-        margin-right: 5px;
-        margin-bottom: 5px;
-      }
-    }
-  }
+.content-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  font-size: 16px;
+  margin-top: 0px;
+  margin-bottom: 6px;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  height: 36px;
+  overflow: hidden;
+  display: block;
+  color: #6c757d;
+}
+
+.tags {
+  margin-top: auto;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 16px;
+  background-color: #181717;
+  color: #6c757d;
+  font-size: 12px;
+  line-height: 1;
+  margin-right: 8px;
+  border-radius: 4px;
+}
+.tag:hover{
+  color: #f6f9ff;
 }
 </style>
