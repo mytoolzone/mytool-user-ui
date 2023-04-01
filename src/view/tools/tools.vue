@@ -92,27 +92,6 @@
         <el-form-item label="图标:"  prop="icon" >
           <el-input v-model="formData.icon" :clearable="true"  placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="标签:"  prop="tags" >
-          <el-select v-model="formData.tags" placeholder="请选择" style="width:100%">
-            <el-option 
-              v-for="item in tool_tagOptions"
-              :key="item.value"
-              :label="`${item.label}(${item.value})`"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="类型:"  prop="type" >
-          <!-- <el-input v-model="formData.type" :clearable="true"  placeholder="请输入" /> -->
-          <el-select v-model="formData.type" placeholder="请选择" style="width:100%">
-            <el-option 
-              v-for="item in tool_typeOptions"
-              :key="item.value"
-              :label="`${item.label}(${item.value})`"
-              :value="item.value"
-            />
-          </el-select>
-        </el-form-item>
         <el-form-item label="属性:"  prop="attr" >
           <!-- <el-input v-model="formData.attr" :clearable="true"  placeholder="请输入" /> -->
           <el-select v-model="formData.attr" placeholder="请选择" style="width:100%">
@@ -124,6 +103,31 @@
             />
           </el-select>
         </el-form-item>
+
+        <el-form-item label="类型:"  prop="type" >
+          <!-- <el-input v-model="formData.type" :clearable="true"  placeholder="请输入" /> -->
+          <el-select v-model="formData.type" placeholder="请选择" style="width:100%">
+            <el-option 
+              v-for="item in tool_typeOptions"
+              :key="item.value"
+              :label="`${item.label}(${item.value})`"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="标签:"  prop="tags" >
+          <el-select v-model="formData.tags" placeholder="请选择" style="width:100%">
+            <el-option 
+              v-for="item in tool_tagOptions"
+              :key="item.value"
+              :label="`${item.label}(${item.value})`"
+              :value="item.value"
+            />
+          </el-select>
+        </el-form-item>
+
+
         <el-form-item label="简介:"  prop="desc" >
           <el-input type="textarea" v-model="formData.desc" :clearable="true"  placeholder="请输入" />
         </el-form-item>

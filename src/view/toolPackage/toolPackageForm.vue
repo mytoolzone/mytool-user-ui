@@ -8,14 +8,15 @@
         :rules="rule"
         label-width="120px"
       >
-        <!-- <el-form-item label="工具id:" prop="toolId">
-          <el-input v-model.number="formData.toolId" :clearable="true" placeholder="请输入" />
+        <el-form-item :label="tool.attr=='external' ?'外链网址:':'接口地址:' " prop="apiUrl">
+          <el-input
+            v-model="formData.apiUrl"
+            :clearable="true"
+            placeholder="请输入"
+          />
         </el-form-item>
-        <el-form-item label="名称:" prop="name">
-          <el-input v-model="formData.name" :clearable="true" placeholder="请输入" />
-        </el-form-item> -->
 
-        <el-form-item prop="uiData">
+        <el-form-item prop="uiData" v-show="tool.attr == 'formcreate'">
           <slot name="form-item">
             功能表单 -- &nbsp;
             <el-link
@@ -37,7 +38,7 @@
           />
         </el-form-item>
 
-        <el-form-item prop="config">
+        <el-form-item prop="config" v-show="tool.attr == 'formcreate'">
           <slot name="form-item">
             配置表单 -- &nbsp;
             <el-link
@@ -58,14 +59,8 @@
             placeholder="请输入"
           />
         </el-form-item>
-        <el-form-item label="提交地址:" prop="apiUrl">
-          <el-input
-            v-model="formData.apiUrl"
-            :clearable="true"
-            placeholder="请输入"
-          />
-        </el-form-item>
-        <el-form-item label="源代码地址:" prop="packageUrl">
+
+        <!-- <el-form-item label="源代码地址:" prop="packageUrl">
           <el-input
             v-model="formData.packageUrl"
             :clearable="true"
@@ -78,13 +73,12 @@
             :clearable="true"
             placeholder="请输入"
           />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
-          <el-button type="primary" @click="back">返回</el-button>
+          <el-button type="primary" @click="back">返回{{toolType}}</el-button>
         </el-form-item>
       </el-form>
-
 
       <el-dialog
         title="提示"
@@ -121,6 +115,8 @@ import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { ref, reactive } from "vue";
 import { getCurrentInstance, onMounted } from '@vue/runtime-core'
+import { toRefs } from 'vue'
+
 
 
 const route = useRoute();
@@ -149,6 +145,13 @@ const FcDesignerRule = '[{"type":"input","field":"cuk5qqdw3umc","title":"输入�
 const currentInstance = getCurrentInstance()
 const designer = ref(null)
 
+
+const props = defineProps({
+    tool: {attr:'external'}
+})
+
+const {tool} = toRefs(props)
+
 // 初始化方法
 const init = async () => {
   // 建议通过url传参获取目标数据ID 调用 find方法进行查询数据操作 从而决定本页面是create还是update 以下为id作为url参数示例
@@ -173,6 +176,7 @@ const save = async () => {
     switch (type.value) {
       case "create":
         res = await createToolPackage(formData.value);
+        type.value = "update";
         break;
       case "update":
         res = await updateToolPackage(formData.value);

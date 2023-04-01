@@ -5,9 +5,10 @@
     </div>
 
     <ul>
-      <li v-for="(item, index) in navItems.slice().reverse()" :key="index">
+      <li v-for="(item, index) in navItems" :key="index">
         <a :href="item.link" @mouseover="handleMouseover(navItems.length - index - 1)">
-          <i class="iconfont">{{ item.icon }}</i>{{ item.text }}
+          <i class="iconfont"></i>
+          {{ item.text }}
           <span v-show="navItems.length - index - 1 === activeIndex">▼</span>
         </a>
       </li>
@@ -37,8 +38,6 @@ nav {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: block;
-    float: right;
     height: 100%;
     display: flex;
     justify-content: space-between;
@@ -48,7 +47,7 @@ nav {
       margin: 0 10px;
 
       a {
-        color: #fff;
+        color: #c6c9cf;
         text-decoration: none;
         position: relative;
 
@@ -83,11 +82,11 @@ export default {
   data() {
     return {
       navItems: [
-        { text: '首页', link: '#', icon: 'icon-home' },
-        { text: '产品', link: '#', icon: 'icon-gift' },
-        { text: '服务', link: '#', icon: 'icon-cog' },
-        { text: '关于我们', link: '#', icon: 'icon-info' },
-        { text: '联系我们', link: '#', icon: 'icon-phone' }
+        { text: 'AiTool', link: '#', icon: 'icon-home' },
+        { text: '推荐工具', link: '#', icon: 'icon-cog' },
+        { text: '我的工具', link: '#', icon: 'icon-cog' },
+        { text: '个人收藏', link: '#', icon: 'icon-cog' },
+        { text: '个人中心', link: '#/layout/person', icon: 'icon-gift' },
       ],
       activeIndex: -1
     }

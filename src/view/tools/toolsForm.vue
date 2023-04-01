@@ -30,6 +30,20 @@
 
         <el-row :gutter="0">
           <el-col :span="8">
+          <el-form-item label="类型:"  prop="type" >
+            <!-- <el-input v-model="formData.type" :clearable="true"  placeholder="请输入" /> -->
+            <el-select v-model="formData.type" placeholder="请选择" style="width:100%">
+              <el-option 
+                v-for="item in tool_typeOptions"
+                :key="item.value"
+                :label="`${item.label}(${item.value})`"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
             <el-form-item label="属性:"  prop="attr" >
               <!-- <el-input v-model="formData.attr" :clearable="true"  placeholder="请输入" /> -->
               <el-select v-model="formData.attr" placeholder="请选择" style="width:100%">
@@ -54,19 +68,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-          <el-form-item label="类型:"  prop="type" >
-            <!-- <el-input v-model="formData.type" :clearable="true"  placeholder="请输入" /> -->
-            <el-select v-model="formData.type" placeholder="请选择" style="width:100%">
-              <el-option 
-                v-for="item in tool_typeOptions"
-                :key="item.value"
-                :label="`${item.label}(${item.value})`"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          </el-col>
+
 
         </el-row>
 
@@ -83,7 +85,7 @@
 
     <h3> 工具详情 </h3>
     <div>
-        <ToolPackageForm> </ToolPackageForm>
+        <ToolPackageForm :tool="formData"> </ToolPackageForm>
     </div>
     <ChooseImg ref="chooseImg" :target="formData" :target-key="`icon`" />
   </div>

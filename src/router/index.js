@@ -7,7 +7,19 @@ const routes = [{
 {
   path: '/',
   name: 'Public',
-  component: () => import('@/view/public/index.vue')
+  component: () => import('@/view/public/index.vue'),
+  children: [
+    {
+      path: '/',
+      name: 'Index',
+      component: () => import('@/view/public/Index-list.vue')
+    },
+    {
+      path: '/detail',
+      name: 'Detail',
+      component: () => import('@/view/public/detail.vue')
+    },
+  ]
 },
 {
   path: '/init',

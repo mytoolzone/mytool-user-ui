@@ -1,18 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <nav class="navbar">
-      <a href="/" class="logo">
-        <a data-pswp-width='512' data-pswp-height='512' target='_blank' href="https://tools.mytool.zone/logo.png"><img src="https://tools.mytool.zone/logo.png" alt="ToolsDar logo" /></a>
-        <span class="title">ToolsDar</span>
-      </a>
-      <ul class="menu">
-        <li><a href="#">首页</a></li>
-        <li><a href="#">工具分类</a></li>
-        <li><a href="#">热门工具</a></li>
-        <li><a href="#">优惠信息</a></li>
-        <li><a href="#">关于我们</a></li>
-      </ul>
-    </nav> -->
     <nav class="navbar">
       <top></top>
     </nav>
@@ -23,8 +10,7 @@
 
     <div class="main-content">
         <!-- 这里是页面主要内容 -->
-        <div><search></search></div>
-        <div><cardlist></cardlist></div>
+        <router-view></router-view>
     </div>
   </div>
 </template>
