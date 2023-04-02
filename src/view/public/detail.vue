@@ -14,12 +14,23 @@
         </div>
       </div>
     </div>
-  <div class="body">
-    <p>{{ article.desc }}</p>
-  </div>
-  <div class="recommend">
-    <recommends></recommends>
-  </div>
+    <div class="body">
+      <p>{{ article.desc }}</p>
+    </div>
+    <div v-if="article.attr=='formcreate'">
+
+    <div class="workbench" :class="{ 'max': isMaxWorkbench }">
+      <el-row>
+        <el-col :span="5" @click="expandWorkbench" class="btn"> 放大功能区 </el-col>
+        <el-col :span="5" @click="reduceWorkbench" class="btn"> 缩小功能区 </el-col>
+      </el-row>
+      <iframe :src='toolPackage.apiUrl' width="100%" height="360px"> </iframe>
+    </div>
+
+    </div>
+    <div class="recommend">
+      <recommends></recommends>
+    </div>
   </div>
 </template>
 
@@ -37,6 +48,7 @@ export default {
       article: {},
       toolPackage: {},
       id: 0,
+      isMaxWorkbench: false
     }
   },
   watch: {
@@ -54,6 +66,14 @@ export default {
     this.load()
   },
   methods:{
+    expandWorkbench(){
+      console.log('expandWorkbench')
+      this.isMaxWorkbench = true
+    },
+    reduceWorkbench(){
+      console.log('reduceWorkbench')
+      this.isMaxWorkbench = false
+    },
     load(){
       findIndexTool({ID:this.id}).then( res=>{
         if(res.code == 0 ){
@@ -78,7 +98,7 @@ export default {
   align-items: center;
   width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0px;
   font-size: 16px;
   line-height: 1.5;
   color: #f2f2f2;
@@ -132,13 +152,50 @@ export default {
     }
   }
 
+  .body{
+    background-color: #272929;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 5px;
+  }
   .body p{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     font-size: 16px;
-    min-height: 160px;
-    color: #d4d4d4;
+    min-height: 80px;
+    color: #616A72;
     text-indent: 2em;
     line-height: 2em;
     margin-top: 25px;
   }
+
+  .workbench{
+    .btn{
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 0px;
+      margin-left: 15px;
+      text-align: center;
+      background: #333232;
+    }
+    iframe{
+      border:none
+    }
+  }
+
+  .max {
+     position: fixed;
+     display: block;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     z-index: 10000;
+     background-color: #272929;
+     opacity: 0.99;
+     iframe{
+        height: calc(100vh - 80px);
+     }
+  }
+
 }
 </style>
