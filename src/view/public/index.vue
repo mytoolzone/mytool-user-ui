@@ -4,11 +4,11 @@
       <top></top>
     </nav>
 
-    <nav class="sidebar">
-      <sidebar @chooseMenu="chooseMenu"></sidebar>
+    <nav class="sidebar" :class="{'mobile-sidebar': isMobileFlag}">
+      <sidebar @chooseMenu="chooseMenu" ></sidebar>
     </nav>
 
-    <div class="main-content">
+    <div class="main-content" :class="{'mobile-content': isMobileFlag}">
         <!-- 这里是页面主要内容 -->
         <router-view></router-view>
     </div>
@@ -20,6 +20,9 @@ import Top from './components/header.vue'
 import Sidebar from './components/sidebar.vue'
 import Search from './components/search.vue'
 import Cardlist from './components/cardlist.vue'
+import {isMobile}  from '@/utils/page.js'
+
+
 export default {
   name: 'MyPage',
   components: {
@@ -30,13 +33,17 @@ export default {
   },
   data() {
     return {
-
+      isMobileFlag: false
     };
+  },
+  mounted() {
+    this.isMobileFlag = isMobile()
   },
   methods: {
     chooseMenu(tag){
       console.log('index -- chooseMenu', tag)
-    }
+    },
+    
   }
 };
 </script>
@@ -54,15 +61,18 @@ export default {
   position: fixed;
 }
 
-
 .sidebar {
   height: 100vh;
   margin: 0px;
   padding-top: 80px;
   width: 160px;
 }
+.mobile-sidebar{
+  width: 60px;
+}
 
 .main-content {
+  height: calc(100vh - 80px) ;
   width: calc(100vw - 160px);
   margin: 0px;
   background-color: #1A1B1D;
@@ -70,5 +80,29 @@ export default {
   font-size: 24px;
   line-height: 1.5;
   color: #2f3542;
+  overflow-y: scroll;
 }
+
+.main-content::-webkit-scrollbar {
+  width: 2px; 
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: #4F5050;
+  height: 60px !important;
+}
+.main-content::-webkit-scrollbar-thumb:hover {
+  border-radius: 2px;
+  background:  #EF3842;
+}
+.main-content::-webkit-scrollbar-track-piece {
+  background-color: #3d3b3b !important;
+  border-radius: 2px;
+}
+
+.mobile-content{
+  width: calc(100vw - 50px);
+}
+
 </style>

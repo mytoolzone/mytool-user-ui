@@ -8,7 +8,7 @@
         :rules="rule"
         label-width="120px"
       >
-        <el-form-item :label="tool.attr=='external' ?'外链网址:':'接口地址:' " prop="apiUrl">
+        <el-form-item v-show="tool.attr!='innnerComponent'" :label="tool.attr=='external' ?'外链网址:':'接口地址:' " prop="apiUrl">
           <el-input
             v-model="formData.apiUrl"
             :clearable="true"
@@ -16,7 +16,7 @@
           />
         </el-form-item>
 
-        <el-form-item prop="uiData" v-show="tool.attr == 'formcreate'">
+        <el-form-item prop="uiData" v-show="tool.attr == 'iframe' || tool.attr == 'innnerComponent'   ">
           <slot name="form-item">
             功能表单 -- &nbsp;
             <el-link
@@ -38,7 +38,7 @@
           />
         </el-form-item>
 
-        <el-form-item prop="config" v-show="tool.attr == 'formcreate'">
+        <el-form-item prop="config" v-show="tool.attr == 'iframe'">
           <slot name="form-item">
             配置表单 -- &nbsp;
             <el-link
@@ -60,20 +60,6 @@
           />
         </el-form-item>
 
-        <!-- <el-form-item label="源代码地址:" prop="packageUrl">
-          <el-input
-            v-model="formData.packageUrl"
-            :clearable="true"
-            placeholder="请输入"
-          />
-        </el-form-item>
-        <el-form-item label="二进制地址:" prop="binaryUrl">
-          <el-input
-            v-model="formData.binaryUrl"
-            :clearable="true"
-            placeholder="请输入"
-          />
-        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
           <el-button type="primary" @click="back">返回{{toolType}}</el-button>

@@ -1,6 +1,7 @@
 <template>
-  <div class="card-list">
-    <div v-for="(item, index) in items" :key="index" class="card" @click="goToDetail(item.ID)">
+  <div class="wrap"> 
+    <div class="card-list">
+      <div v-for="(item, index) in items" :key="index" class="card" @click="goToDetail(item.ID)">
       <div> 
           <div class="image-container">
             <a data-pswp-width='512' data-pswp-height='512' target='_blank' href="item.icon">
@@ -17,6 +18,7 @@
          <!-- <span v-for="(tag, index) in item.tags" :key="index" class="tag">{{ tag }}</span> -->
       </div>
     </div>
+   </div>
   </div>
 </template>
 
@@ -71,12 +73,15 @@ export default {
 </script>
 
 <style scoped>
+.wrap{
+ 
+}
 .card-list {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  width: 100%;
   padding-left: 15px;
-  overflow-y: scroll;
   /*justify-content: space-around;*/
 }
 

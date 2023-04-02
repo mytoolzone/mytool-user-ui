@@ -7,3 +7,15 @@ export default function getPageTitle(pageTitle, route) {
   }
   return `${config.appName}`
 }
+
+export  function isMobile(){
+  const userAgentInfo = navigator.userAgent;
+  const agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'];
+  for (let i = 0; i < agents.length; i++) {
+    if (userAgentInfo.indexOf(agents[i]) > 0) {
+      return true
+      break;
+    }
+  }
+  return false
+}

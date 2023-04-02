@@ -41,7 +41,7 @@ export default ({
   const esbuild = {}
 
   const config = {
-    base: './', // index.html文件所在位置
+    base: 'https://tools.mytool.zone/boss', // index.html文件所在位置
     root: './', // js导入的资源路径，src
     resolve: {
       alias,
@@ -68,6 +68,8 @@ export default ({
       minify: 'terser', // 是否进行压缩,boolean | 'terser' | 'esbuild',默认使用terser
       manifest: false, // 是否产出manifest.json
       sourcemap: false, // 是否产出sourcemap.json
+      assetsDir: 'static',
+      //publicPath: 'https://cdn.example.com/my-app/',
       outDir: 'dist', // 产出目录
       // rollupOptions,
     },

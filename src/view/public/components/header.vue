@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <div class="logo">
+    <div class="logo" :class="{'logo-mobile': isMobileFlag}">
       <img src="https://tools.mytool.zone/logo.png" alt="Logo">
     </div>
     <ul>
@@ -28,7 +28,13 @@ nav {
     img {
       height: 80px;
       width: 160px;
-      //border-radius: 100px;
+    }
+  }
+  .logo-mobile{
+    margin-right: 0px;
+    img {
+      height: 60px;
+      width: 60px;
     }
   }
 
@@ -42,7 +48,7 @@ nav {
     align-items: center;
 
     li {
-      margin: 0 10px;
+      margin: 0 20px;
 
       a {
         color: #c6c9cf;
@@ -76,18 +82,23 @@ nav {
 </style>
 
 <script>
+import {isMobile}  from '@/utils/page.js'
+
 export default {
   data() {
     return {
+      isMobileFlag: false,
       navItems: [
         { text: 'AiTool', link: '#/?tag=ai', icon: 'icon-home' },
-        { text: '推荐工具', link: '#/?tag=hot', icon: 'icon-cog' },
-        { text: '我的工具', link: '#/user/userCmds', icon: 'icon-cog' },
-        { text: '个人收藏', link: '#/user/collect', icon: 'icon-cog' },
-        { text: '个人中心', link: '#/layout/person', icon: 'icon-gift' },
+        // { text: '快命令', link: '#/user/userCmds', icon: 'icon-cog' },
+        // { text: '收藏', link: '#/user/collect', icon: 'icon-cog' },
+        // { text: '我的', link: '#/layout/person', icon: 'icon-gift' },
       ],
       activeIndex: -1
     }
+  },
+  mounted(){
+    this.isMobileFlag = isMobile()
   },
   methods: {
     handleMouseover(index) {

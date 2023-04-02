@@ -17,17 +17,21 @@
     <div class="body">
       <p>{{ article.desc }}</p>
     </div>
-    <div v-if="article.attr=='formcreate'">
 
-    <div class="workbench" :class="{ 'max': isMaxWorkbench }">
-      <el-row>
-        <el-col :span="5" @click="expandWorkbench" class="btn"> 放大功能区 </el-col>
-        <el-col :span="5" @click="reduceWorkbench" class="btn"> 缩小功能区 </el-col>
-      </el-row>
-      <iframe :src='toolPackage.apiUrl' width="100%" height="360px"> </iframe>
+   <div v-if="article.attr=='innnerComponent'">
+      <async-component :innerComp='toolPackage.uiData'></async-component>
+   </div>
+
+    <div v-if="article.attr=='iframe'">
+      <div class="workbench" :class="{ 'max': isMaxWorkbench }">
+        <el-row>
+          <el-col :span="5" @click="expandWorkbench" class="btn"> 放大功能区 </el-col>
+          <el-col :span="5" @click="reduceWorkbench" class="btn"> 缩小功能区 </el-col>
+        </el-row>
+        <iframe :src='toolPackage.apiUrl' width="100%" height="360px"> </iframe>
+      </div>
     </div>
 
-    </div>
     <div class="recommend">
       <recommends></recommends>
     </div>
@@ -36,12 +40,14 @@
 
 <script>
 import Recommends from './components/recommend.vue'
+import AsyncComponent from './tools/async-component.vue'
 import { findIndexTool, getRecommendToolList } from "@/api/tools"
 import { findIndexToolPackage } from "@/api/toolPackage"
 
 export default {
   components: {
     Recommends,
+    AsyncComponent
   },
   data() {
     return {
@@ -154,14 +160,14 @@ export default {
 
   .body{
     background-color: #272929;
-    padding: 15px;
+    padding: 10px;
     border-radius: 15px;
     margin-bottom: 5px;
   }
   .body p{
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     font-size: 16px;
-    min-height: 80px;
+    min-height: 50px;
     color: #616A72;
     text-indent: 2em;
     line-height: 2em;
