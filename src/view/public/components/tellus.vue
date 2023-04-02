@@ -24,6 +24,7 @@
 
 <script>
   import { ref } from 'vue';
+  import {createIndexComment} from '@/api/comments'
 
   export default {
     data() {
@@ -38,12 +39,12 @@
     methods:{
         submitForm () {
             console.log(this.form);
-            this.form = {
-                name: '',
-                email: '',
-                message: ''
-            };
-            
+            var content = `name:${this.form.name},email:${this.form.email},content:${this.form.message}`
+            createIndexComment( {content: content}).then(res => {
+                if(res.code = 0){
+                    alert('感谢您的宝贵意见')
+                }
+            })
             this.close()
         },
         close(){
@@ -106,8 +107,10 @@
 }
 .input{
     width: 320px;
+    height: 25px;
+    border: none;
 }
-textarea{
-    height: 160px;
+textarea.input {
+    min-height: 120px;
 }
 </style>

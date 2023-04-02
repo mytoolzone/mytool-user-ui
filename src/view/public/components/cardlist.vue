@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       tag: '',
+      keyword: '',
       items: [],
     };
   },
@@ -43,11 +44,19 @@ export default {
       if(this.$route.name == 'Index'){
         this.getIndexToolList()
       }
-    }
+    },
+    '$route.query.keyword': function(){
+    	// 只要categoryId的值发生变化,这个方法就会被调用
+      this.keyword =this.$route.query.keyword
+      //重新调用请求数据的方法，刷新页面数据
+      if(this.$route.name == 'Index'){
+        this.getIndexToolList()
+      }
+    },
   },
   methods:{
     async getIndexToolList(){
-      let toolList =await getIndexToolList({tags: this.tag})
+      let toolList =await getIndexToolList({tags: this.tag ,keyword: this.keyword})
       console.log('toolList', toolList)
       if(toolList.code == 0){
         this.items = toolList.data.list

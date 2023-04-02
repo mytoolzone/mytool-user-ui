@@ -3,7 +3,6 @@
     <div class="logo">
       <img src="https://tools.mytool.zone/logo.png" alt="Logo">
     </div>
-
     <ul>
       <li v-for="(item, index) in navItems" :key="index">
         <a :href="item.link" @mouseover="handleMouseover(navItems.length - index - 1)">
@@ -81,8 +80,8 @@ export default {
   data() {
     return {
       navItems: [
-        { text: 'AiTool', link: '#/index/aitool', icon: 'icon-home' },
-        { text: '推荐工具', link: '#/index/recomment', icon: 'icon-cog' },
+        { text: 'AiTool', link: '#/?tag=ai', icon: 'icon-home' },
+        { text: '推荐工具', link: '#/?tag=hot', icon: 'icon-cog' },
         { text: '我的工具', link: '#/user/userCmds', icon: 'icon-cog' },
         { text: '个人收藏', link: '#/user/collect', icon: 'icon-cog' },
         { text: '个人中心', link: '#/layout/person', icon: 'icon-gift' },

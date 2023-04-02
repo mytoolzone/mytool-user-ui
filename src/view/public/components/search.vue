@@ -1,6 +1,6 @@
 <template>
   <div class="search-bar">
-    <input type="text" v-model="value" @input="handleInput" :class="{ 'large-input': value }" />
+    <input type="text" v-model="keyword" :class="{ 'large-input': value }" />
     <button @click="handleSearch">搜索</button>
   </div>
 </template>
@@ -10,23 +10,28 @@ import { ref } from 'vue'
 
 export default {
   name: 'SearchBar',
-  setup() {
-    const value = ref('')
-    const background = ref('https://toolsdar.com/wp-content/themes/onenav/images/fx/mountain-2.png')
-
-    function handleInput(event) {
-      value.value = event.target.value
-    }
-
-    function handleSearch() {
-      console.log('搜索：', value.value)
-    }
-
+  data(){
     return {
-      value,
-      background,
-      handleInput,
-      handleSearch
+      keyword: '',
+      background: 'https://toolsdar.com/wp-content/themes/onenav/images/fx/mountain-2.png'
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+     handleSearch() {
+      if(this.keyword.length<2 ){
+        alert('至少输入2个字')
+        return
+      }
+      if(this.keyword.length>20 ){
+        alert('最多输入20个字')
+        return
+      }
+      console.log('搜索：', this.keyword)
+      this.$router.replace({query:{keyword: this.keyword}})
+      this.keyword = ''
     }
   }
 }

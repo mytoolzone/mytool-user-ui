@@ -139,7 +139,7 @@ export const getIndexToolList = (params) => {
 // @Router /tools/getToolsList [get]
 export const getRecommendToolList = (params) => {
   return service({
-    url: '/tools/getIndexToolList',
+    url: '/tools/getRecommendToolList',
     method: 'get',
     params
   })

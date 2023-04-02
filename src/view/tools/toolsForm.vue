@@ -68,12 +68,10 @@
               </el-select>
             </el-form-item>
           </el-col>
-
-
         </el-row>
 
         <el-form-item label="简介:" prop="desc">
-          <el-input type="textarea" v-model="formData.desc" :clearable="true" placeholder="请输入" />
+          <el-input type="textarea" :rows="10" v-model="formData.desc" :clearable="true" placeholder="请输入" />
         </el-form-item>
 
         <el-form-item>
