@@ -17,7 +17,6 @@
 </template>
 
 <style lang="scss" scoped>
-
 nav {
   background-color: #272929;
   height: 80px;
@@ -82,10 +81,10 @@ export default {
   data() {
     return {
       navItems: [
-        { text: 'AiTool', link: '#', icon: 'icon-home' },
-        { text: '推荐工具', link: '#', icon: 'icon-cog' },
-        { text: '我的工具', link: '#', icon: 'icon-cog' },
-        { text: '个人收藏', link: '#', icon: 'icon-cog' },
+        { text: 'AiTool', link: '#/index/aitool', icon: 'icon-home' },
+        { text: '推荐工具', link: '#/index/recomment', icon: 'icon-cog' },
+        { text: '我的工具', link: '#/user/userCmds', icon: 'icon-cog' },
+        { text: '个人收藏', link: '#/user/collect', icon: 'icon-cog' },
         { text: '个人中心', link: '#/layout/person', icon: 'icon-gift' },
       ],
       activeIndex: -1

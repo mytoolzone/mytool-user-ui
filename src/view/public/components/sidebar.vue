@@ -9,26 +9,7 @@
     @open="handleOpen"
     @close="handleClose"
   >
-    <el-sub-menu index="1">
-      <template #title>
-        <el-icon><location /></el-icon>
-        <span>Navigator One</span>
-      </template>
-        <el-menu-item index="1-1">item one</el-menu-item>
-        <el-menu-item index="1-2">item two</el-menu-item>
-        <el-menu-item index="1-3">item three</el-menu-item>
-    </el-sub-menu>
-
-    <el-sub-menu index="1">
-      <template #title>
-        <el-icon><location /></el-icon>
-        <span>Navigator One</span>
-      </template>
-        <el-menu-item index="1-1">item one</el-menu-item>
-        <el-menu-item index="1-2">item two</el-menu-item>
-        <el-menu-item index="1-3">item three</el-menu-item>
-    </el-sub-menu>
- 
+        <el-menu-item v-for="(tag,index) in tags" :index="tag.value" @click="chooseMenu(tag.value)"> {{tag.label}} </el-menu-item>
   </el-menu>
 
   <el-menu
@@ -40,37 +21,79 @@
     @open="handleOpen"
     @close="handleClose"
   >
-    <el-menu-item index="1">
+    <el-menu-item index="about" @click="openAbout()">
       <template #title>
         <el-icon><location /></el-icon>
         <span>关于我们</span>
       </template>
     </el-menu-item>
-        <el-menu-item index="1">
+        <el-menu-item index="node" @click="openTellUs()">
       <template #title>
         <el-icon><location /></el-icon>
         <span>留言交流</span>
       </template>
     </el-menu-item>
   </el-menu>
-
+  <about v-show="isOpenAbout" @close="isOpenAbout = false"></about>
+  <tellus v-show="isOpenTellUs" @close="isOpenTellUs = false"></tellus>
  </div>
  
 </template>
 
-<script lang="ts" setup>
+<script>
+
 import {
   Document,
   Menu as IconMenu,
   Location,
-  Setting,
+  Setting
 } from '@element-plus/icons-vue'
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+
+import About from './about.vue'
+import Tellus from './tellus.vue'
+
+
+export default {
+  name: 'sidebar',
+  components: {
+    About,
+    Tellus
+  },
+  data() {
+    return {
+      isOpenAbout: false,
+      isOpenTellUs: false,
+      tags:[
+        
+      ]
+    };
+  },
+  mounted(){
+    let response = {"code":0,"data":{"list":[{"ID":41,"CreatedAt":"2023-04-01T12:11:34.536+08:00","UpdatedAt":"2023-04-01T23:51:21.824+08:00","label":"在线修图","value":"onlineEditImage","status":true,"sort":0,"sysDictionaryID":7},{"ID":42,"CreatedAt":"2023-04-01T12:12:59.162+08:00","UpdatedAt":"2023-04-01T22:32:57.773+08:00","label":"JSON处理","value":"json","status":true,"sort":1,"sysDictionaryID":7},{"ID":45,"CreatedAt":"2023-04-01T20:35:02.75+08:00","UpdatedAt":"2023-04-01T22:31:41.897+08:00","label":"PPT","value":"ppt","status":true,"sort":1,"sysDictionaryID":7},{"ID":46,"CreatedAt":"2023-04-01T20:35:59.725+08:00","UpdatedAt":"2023-04-01T22:32:12.624+08:00","label":"WORD文档","value":"word","status":true,"sort":1,"sysDictionaryID":7},{"ID":47,"CreatedAt":"2023-04-01T20:36:15.018+08:00","UpdatedAt":"2023-04-01T22:32:00.606+08:00","label":"视频","value":"video","status":true,"sort":1,"sysDictionaryID":7},{"ID":48,"CreatedAt":"2023-04-01T20:37:36.846+08:00","UpdatedAt":"2023-04-01T23:51:38.313+08:00","label":"文档格式转换","value":"docConvert","status":true,"sort":1,"sysDictionaryID":7},{"ID":49,"CreatedAt":"2023-04-01T20:51:44.033+08:00","UpdatedAt":"2023-04-01T20:51:44.033+08:00","label":"AI图像处理","value":"aiImage","status":true,"sort":1,"sysDictionaryID":7},{"ID":50,"CreatedAt":"2023-04-01T20:52:11.019+08:00","UpdatedAt":"2023-04-01T20:52:11.019+08:00","label":"Ai视频处理","value":"aiVideo","status":true,"sort":1,"sysDictionaryID":7},{"ID":27,"CreatedAt":"2023-03-06T23:13:52.572+08:00","UpdatedAt":"2023-04-01T22:32:21.892+08:00","label":"Golang","value":"golang","status":true,"sort":2,"sysDictionaryID":7},{"ID":28,"CreatedAt":"2023-03-06T23:14:06.658+08:00","UpdatedAt":"2023-04-01T22:32:28.244+08:00","label":"JAVA","value":"java","status":true,"sort":2,"sysDictionaryID":7},{"ID":29,"CreatedAt":"2023-03-06T23:14:23.098+08:00","UpdatedAt":"2023-04-01T22:32:34.837+08:00","label":"JS","value":"js","status":true,"sort":3,"sysDictionaryID":7},{"ID":26,"CreatedAt":"2023-03-06T23:06:04.362+08:00","UpdatedAt":"2023-04-01T22:33:15.987+08:00","label":"PHP","value":"php","status":true,"sort":10,"sysDictionaryID":7}],"total":12,"page":1,"pageSize":100},"msg":"获取成功"}
+    this.tags = response.data.list
+  },
+  methods: {
+    openAbout() {
+      this.isOpenAbout = true
+    },
+    openTellUs() {
+      this.isOpenTellUs = true
+    },
+    handleOpen (key, keyPath) {
+      //console.log('open ',key, keyPath)
+    },
+    handleClose (key, keyPath) {
+      //console.log(key, keyPath)
+    },
+    chooseMenu(key){
+      console.log('chooseMenu' , key)
+      this.$emit('chooseMenu', key)
+      this.$router.push({name:'Index', query :{tag: key}})
+    }
+  }
+};
+
+
 </script>
 
 <style  scoped>

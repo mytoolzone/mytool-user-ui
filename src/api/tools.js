@@ -95,3 +95,52 @@ export const getToolsList = (params) => {
     params
   })
 }
+
+
+// @Tags Tools
+// @Summary 用id查询Tools
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query model.Tools true "用id查询Tools"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /tools/findTools [get]
+export const findIndexTool = (params) => {
+  return service({
+    url: '/tools/findIndexTool',
+    method: 'get',
+    params
+  })
+}
+
+// @Tags Tools
+// @Summary 分页获取Tools列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query request.PageInfo true "分页获取Tools列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /tools/getToolsList [get]
+export const getIndexToolList = (params) => {
+  return service({
+    url: '/tools/getIndexToolList',
+    method: 'get',
+    params
+  })
+}
+
+// @Tags Tools
+// @Summary 分页获取Tools列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query request.PageInfo true "分页获取Tools列表"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
+// @Router /tools/getToolsList [get]
+export const getRecommendToolList = (params) => {
+  return service({
+    url: '/tools/getIndexToolList',
+    method: 'get',
+    params
+  })
+}

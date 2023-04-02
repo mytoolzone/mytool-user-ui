@@ -1,74 +1,63 @@
 <template>
   <div class="card-list">
-    <div v-for="(item, index) in items" :key="index" class="card">
+    <div v-for="(item, index) in items" :key="index" class="card" @click="goToDetail(item.ID)">
       <div> 
           <div class="image-container">
-            <a data-pswp-width='512' data-pswp-height='512' target='_blank' href="item.imageUrl">
-              <img class="card-cover" :src="item.imageUrl" alt="card image" />
+            <a data-pswp-width='512' data-pswp-height='512' target='_blank' href="item.icon">
+              <img class="card-cover" :src="item.icon" alt="card image" />
             </a>
           </div>
          <div class="content-container">
-          <h2>{{ item.title }}</h2>
-          <p>{{ item.description }}</p>
+          <h2>{{ item.name }}</h2>
+          <p>{{ item.desc }}</p>
          </div>
       </div>
       <div class="tags">
-         <span v-for="(tag, index) in item.tags" :key="index" class="tag">{{ tag }}</span>
+      <span  class="tag">{{ item.tags }}</span>
+         <!-- <span v-for="(tag, index) in item.tags" :key="index" class="tag">{{ tag }}</span> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getIndexToolList} from "@/api/tools"
+
+
 export default {
   data() {
     return {
-      items: [
-        {
-          title: 'Card Title 1',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
-          tags: ['Tag 1', 'Tag 2'],
-        },
-        {
-          title: 'Card Title 2',
-          description:
-            'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
-          tags: ['Tag 3'],
-        },
-        {
-          title: 'Card Title 3',
-          description:
-            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
-          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
-        },
-                {
-          title: 'Card Title 3',
-          description:
-            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
-          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
-        },
-                {
-          title: 'Card Title 3',
-          description:
-            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
-          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
-        },
-                {
-          title: 'Card Title 3',
-          description:
-            'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-          imageUrl: 'https://qmplusimg.henrongyi.top/1576554439myAvatar.png',
-          tags: ['Tag 4', 'Tag 5', 'Tag 6'],
-        },
-      ],
+      tag: '',
+      items: [],
     };
   },
+  mounted(){
+      this.tag =this.$route.query.tag
+      this.getIndexToolList()
+  },
+  watch: {
+     '$route.query.tag': function(){
+    	// 只要categoryId的值发生变化,这个方法就会被调用
+      this.tag =this.$route.query.tag
+      //重新调用请求数据的方法，刷新页面数据
+      if(this.$route.name == 'Index'){
+        this.getIndexToolList()
+      }
+    }
+  },
+  methods:{
+    async getIndexToolList(){
+      let toolList =await getIndexToolList({tags: this.tag})
+      console.log('toolList', toolList)
+      if(toolList.code == 0){
+        this.items = toolList.data.list
+      }
+    },
+    goToDetail(toolId){
+      console.log('goToDetail', toolId)
+      this.$router.push({ name:'Detail', query :{id: toolId}})
+    }
+  }
 };
 </script>
 
@@ -78,6 +67,7 @@ export default {
   flex-wrap: wrap;
   gap: 16px;
   padding-left: 15px;
+  overflow-y: scroll;
   /*justify-content: space-around;*/
 }
 
@@ -91,13 +81,13 @@ export default {
   border-radius: 8px;
   box-shadow: 1px 1px 8px rgba(20, 20, 20, 0.9);
   transition: all 0.1s ease-out;
-
 }
 
 .card:hover {
   /*box-shadow: 4px 4px 12px rgba(150, 145, 137, 0.688);*/
   transform: translate(0,-5px);
   color: #fafbfd;
+  cursor: pointer;
 }
 
 .image-container {
@@ -126,7 +116,7 @@ h2 {
 
 p {
   font-size: 14px;
-  line-height: 1.2;
+  line-height: 1.3;
   margin-bottom: 8px;
   height: 36px;
   overflow: hidden;

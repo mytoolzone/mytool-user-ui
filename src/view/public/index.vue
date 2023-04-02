@@ -5,7 +5,7 @@
     </nav>
 
     <nav class="sidebar">
-      <sidebar></sidebar>
+      <sidebar @chooseMenu="chooseMenu"></sidebar>
     </nav>
 
     <div class="main-content">
@@ -33,6 +33,11 @@ export default {
 
     };
   },
+  methods: {
+    chooseMenu(tag){
+      console.log('index -- chooseMenu', tag)
+    }
+  }
 };
 </script>
 

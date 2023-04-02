@@ -3,10 +3,10 @@
     <h2>推荐列表</h2>
     <div class="scroll-container">
       <div class="scroll-content" :style="{ transform: `translateX(${-itemWidth * currentIndex}px)` }">
-        <div v-for="(item, index) in items" :key="index" class="item">
-          <img :src="item.image" alt="Recommendation Image">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
+        <div v-for="(item, index) in items" :key="index" class="item" @click="goToDetail(item.ID)">
+          <img :src="item.icon" alt="">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.desc }}</p>
         </div>
       </div>
     </div>
@@ -14,6 +14,9 @@
 </template>
 
 <script>
+import { getRecommendToolList } from "@/api/tools"
+
+
 export default {
   data() {
     return {
@@ -23,49 +26,12 @@ export default {
     }
   },
   mounted() {
-    // 模拟从 API 获取推荐列表数据，并更新组件状态
-    this.items = [
-      {
-        title: 'Item 1',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.'
-      },
-      {
-        title: 'Item 2',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-      },
-      {
-        title: 'Item 3',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-      },
-      {
-        title: 'Item 4',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
-      },
-      {
-        title: 'Item 5',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-     {
-        title: 'Item 6',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-      },
-      {
-        title: 'Item 7',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
-      },
-      {
-        title: 'Item 8',
-        image: 'https://via.placeholder.com/300x200',
-        description: 'Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    getRecommendToolList().then( res => {
+      console.log("res -- > ", res)
+      if(res.code == 0 ){
+        this.items = res.data.list
       }
-    ]
+    })
   },
   methods: {
     goToPrev() {
@@ -75,6 +41,10 @@ export default {
     goToNext() {
       // 向后滚动一项
       this.currentIndex = Math.min(this.currentIndex + 1, this.items.length - 1);
+    },
+    goToDetail(toolId){
+      console.log('goToDetail', toolId)
+      this.$router.push({ name:'Detail', query :{id: toolId}})
     }
   }
 }
@@ -109,9 +79,12 @@ export default {
     text-align: center;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 
     img {
-      max-width: 100%;
+      margin-left: 80px;
+      text-align: center;
+      width: 70px;
       border-radius: 5px;
       margin-bottom: 0px;
     }

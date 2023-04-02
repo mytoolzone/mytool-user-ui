@@ -95,3 +95,22 @@ export const getToolPackageList = (params) => {
     params
   })
 }
+
+
+
+
+// @Tags ToolPackage
+// @Summary 用id查询ToolPackage
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query model.ToolPackage true "用id查询ToolPackage"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"查询成功"}"
+// @Router /toolPackage/findToolPackage [get]
+export const findIndexToolPackage = (params) => {
+  return service({
+    url: '/toolPackage/findIndexToolPackage',
+    method: 'get',
+    params
+  })
+}
