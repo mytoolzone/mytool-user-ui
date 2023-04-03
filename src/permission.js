@@ -4,20 +4,20 @@ import getPageTitle from '@/utils/page'
 import router from '@/router'
 import Nprogress from 'nprogress'
 
-const whiteList = ['Login', 'Init','Public','Index','Detail']
+const whiteList = ['Login', 'Init', 'Public', 'Index', 'Detail', 'AiWrite']
 
-const getRouter = async(userStore) => {
+const getRouter = async (userStore) => {
   const routerStore = useRouterStore()
   await routerStore.SetAsyncRouter()
   await userStore.GetUserInfo()
   const asyncRouters = routerStore.asyncRouters
-  asyncRouters.forEach(asyncRouter => {
+  asyncRouters.forEach((asyncRouter) => {
     router.addRoute(asyncRouter)
   })
 }
 
 async function handleKeepAlive(to) {
-  if (to.matched.some(item => item.meta.keepAlive)) {
+  if (to.matched.some((item) => item.meta.keepAlive)) {
     if (to.matched && to.matched.length > 2) {
       for (let i = 1; i < to.matched.length; i++) {
         const element = to.matched[i - 1]
@@ -35,7 +35,7 @@ async function handleKeepAlive(to) {
   }
 }
 
-router.beforeEach(async(to, from) => {
+router.beforeEach(async (to, from) => {
   const routerStore = useRouterStore()
   Nprogress.start()
   const userStore = useUserStore()
