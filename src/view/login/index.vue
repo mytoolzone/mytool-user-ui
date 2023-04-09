@@ -1,15 +1,28 @@
 <template>
-  <div id="userLayout">
-    <div class="login_panel">
-      <div class="login_panel_form">
-        <div class="login_panel_form_title">
-          <img
-            class="login_panel_form_title_logo"
-            :src="$GIN_VUE_ADMIN.appLogo"
-            alt
-          >
-          <p class="login_panel_form_title_p">{{ $GIN_VUE_ADMIN.appName }}</p>
+  <div class="loginCcontainer">
+    <iframe
+      src="https://tools.mytool.zone/iframe/star.html"
+      width="100%"
+      height="100%"
+    />
+    <div class="loginConten">
+      <div class="loginHeader">
+        <div class="headerLeft">
+          <a href="/boss/" class="">
+            <img src="https://tools.mytool.zone/logo.png" class="loginLogo" />
+          </a>
         </div>
+        <div class="headerRight">
+          <a href="/./register" class="headerRightLogin shuxian">
+            <span>注册</span>
+          </a>
+
+          <a href="/boss/" class="headerRightLogin"><span>首页</span> </a>
+        </div>
+      </div>
+
+      <div class="login_panel_form">
+        <div class="sign-header">欢迎回来</div>
         <el-form
           ref="loginForm"
           :model="loginFormData"
@@ -34,23 +47,40 @@
               placeholder="请输入密码"
             />
           </el-form-item>
-          <el-form-item v-if="loginFormData.openCaptcha" prop="captcha">
+          <el-form-item
+            v-if="loginFormData.isPasswordShow"
+            prop="confirmPassword"
+          >
+            <el-input
+              v-model="loginFormData.confirmPassword"
+              show-password
+              size="large"
+              type="confirmPassword"
+              placeholder="请确认密码"
+            />
+          </el-form-item>
+          <el-form-item prop="captcha">
             <div class="vPicBox">
               <el-input
                 v-model="loginFormData.captcha"
                 placeholder="请输入验证码"
                 size="large"
-                style="flex:1;padding-right: 20px;"
+                style="flex: 1; padding-right: 20px"
               />
-              <div class="vPic">
+              <div class="vPic" title="点击刷新">
                 <img
                   v-if="picPath"
                   :src="picPath"
                   alt="请输入验证码"
                   @click="loginVerify()"
-                >
+                />
               </div>
             </div>
+          </el-form-item>
+
+          <el-form-item>
+            <el-checkbox id="check1" v-model="checked" />
+            <label for="check1" class="information">记住我的登录信息</label>
           </el-form-item>
           <el-form-item>
             <el-button
@@ -58,53 +88,34 @@
               style="width: 46%"
               size="large"
               @click="checkInit"
-            >前往初始化</el-button>
+            >
+              注册
+            </el-button>
             <el-button
               type="primary"
               size="large"
               style="width: 46%; margin-left: 8%"
               @click="submitForm"
-            >登 录</el-button>
+            >
+              登 录
+            </el-button>
+          </el-form-item>
+          <el-form-item class="mb10">
+            <el-link :underline="false" class="mr10" @click="checkInit"
+              >没有账号 注册</el-link
+            >
+
+            <el-link :underline="false">找回密码</el-link>
           </el-form-item>
         </el-form>
-      </div>
-      <div class="login_panel_right" />
-      <div class="login_panel_foot">
-        <div class="links">
-          <a href="http://doc.henrongyi.top/" target="_blank">
-            <img src="@/assets/docs.png" class="link-icon" alt="文档">
-          </a>
-          <a href="https://support.qq.com/product/371961" target="_blank">
-            <img src="@/assets/kefu.png" class="link-icon" alt="客服">
-          </a>
-          <a
-            href="https://github.com/flipped-aurora/gin-vue-admin"
-            target="_blank"
-          >
-            <img src="@/assets/github.png" class="link-icon" alt="github">
-          </a>
-          <a href="https://space.bilibili.com/322210472" target="_blank">
-            <img src="@/assets/video.png" class="link-icon" alt="视频站">
-          </a>
-        </div>
-        <div class="copyright">
-          <BottomInfo />
-        </div>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'Login',
-}
-</script>
-
 <script setup>
 import { captcha } from '@/api/user'
 import { checkDB } from '@/api/initdb'
-import BottomInfo from '@/view/layout/bottomInfo/bottomInfo.vue'
+
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
@@ -128,12 +139,12 @@ const checkPassword = (rule, value, callback) => {
 
 // 获取验证码
 const loginVerify = () => {
-  captcha({}).then(async(ele) => {
+  captcha({}).then(async (ele) => {
     rules.captcha.push({
       max: ele.data.captchaLength,
       min: ele.data.captchaLength,
       message: `请输入${ele.data.captchaLength}位验证码`,
-      trigger: 'blur',
+      trigger: 'blur'
     })
     picPath.value = ele.data.picPath
     loginFormData.captchaId = ele.data.captchaId
@@ -145,12 +156,14 @@ loginVerify()
 // 登录相关操作
 const loginForm = ref(null)
 const picPath = ref('')
+const checked = ref(false)
 const loginFormData = reactive({
   username: 'admin',
   password: '123456',
   captcha: '',
   captchaId: '',
   openCaptcha: false,
+  isPasswordShow: false
 })
 const rules = reactive({
   username: [{ validator: checkUsername, trigger: 'blur' }],
@@ -158,17 +171,17 @@ const rules = reactive({
   captcha: [
     {
       message: '验证码格式不正确',
-      trigger: 'blur',
-    },
-  ],
+      trigger: 'blur'
+    }
+  ]
 })
 
 const userStore = useUserStore()
-const login = async() => {
+const login = async () => {
   return await userStore.LoginIn(loginFormData)
 }
 const submitForm = () => {
-  loginForm.value.validate(async(v) => {
+  loginForm.value.validate(async (v) => {
     if (v) {
       const flag = await login()
       if (!flag) {
@@ -178,7 +191,7 @@ const submitForm = () => {
       ElMessage({
         type: 'error',
         message: '请正确填写登录信息',
-        showClose: true,
+        showClose: true
       })
       loginVerify()
       return false
@@ -187,7 +200,8 @@ const submitForm = () => {
 }
 
 // 跳转初始化
-const checkInit = async() => {
+const checkInit = async () => {
+  loginFormData.isPasswordShow = true
   const res = await checkDB()
   if (res.code === 0) {
     if (res.data?.needInit) {
@@ -196,14 +210,93 @@ const checkInit = async() => {
     } else {
       ElMessage({
         type: 'info',
-        message: '已配置数据库信息，无法初始化',
+        message: '已配置数据库信息，无法初始化'
       })
     }
   }
 }
-
 </script>
+<style scoped lang="scss">
+.loginCcontainer {
+  height: 100vh;
+}
+.loginConten {
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
 
-<style lang="scss" scoped>
-@import "@/style/newLogin.scss";
+  .loginHeader {
+    margin: 0 auto;
+    width: 1120px;
+    height: 100px;
+    .headerLeft {
+      float: left;
+      min-width: 310px;
+      .loginLogo {
+        float: left;
+        width: 120px;
+        margin-top: 14px;
+        cursor: pointer;
+      }
+    }
+    .headerRight {
+      float: right;
+      width: 200px;
+      text-align: right;
+      line-height: 100px;
+      .shuxian {
+        position: relative;
+        margin-right: 30px;
+      }
+      .shuxian::before {
+        position: absolute;
+        top: 50%;
+        transform: translatey(-40%);
+        left: 54px;
+        content: '';
+        width: 1px;
+        height: 18px;
+        background-color: rgba(216, 216, 216, 1);
+      }
+      .headerRightLogin {
+        color: #fff;
+        font-size: 18px;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.login_panel_form {
+  background-color: #fff;
+  width: 300px;
+  margin: 0 auto;
+  border-radius: 5px !important;
+  padding: 30px 30px 10px !important;
+  .sign-header {
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: 500;
+  }
+}
+
+.vPic {
+  height: 45px;
+}
+.vPicBox {
+  display: flex;
+}
+.information {
+  margin-left: 5px;
+}
+.mb10 {
+  margin-bottom: 10px;
+}
+mr10 {
+  margin-right: 10px;
+}
 </style>

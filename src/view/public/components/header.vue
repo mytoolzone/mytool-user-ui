@@ -1,21 +1,60 @@
 <template>
   <nav>
-    <div class="logo" :class="{'logo-mobile': isMobileFlag}">
-      <img src="https://tools.mytool.zone/logo.png" alt="Logo">
+    <div class="logo" :class="{ 'logo-mobile': isMobileFlag }">
+      <img src="https://tools.mytool.zone/logo.png" alt="Logo" />
     </div>
     <ul>
       <li v-for="(item, index) in navItems" :key="index">
-        <a :href="item.link" @mouseover="handleMouseover(navItems.length - index - 1)">
-          <!-- <el-icon><setting /></el-icon> -->
-
+        <a
+          :href="item.link"
+          @mouseover="handleMouseover(navItems.length - index - 1)"
+        >
           {{ item.text }}
           <span v-show="navItems.length - index - 1 === activeIndex">▼</span>
         </a>
       </li>
     </ul>
+    <div class="me">
+      <div @click="">我的收藏</div>
+      <div>
+        <el-icon><User /></el-icon> 我的
+      </div>
+    </div>
   </nav>
 </template>
 
+<script>
+import { isMobile } from '@/utils/page.js'
+import {
+  Document,
+  Menu as IconMenu,
+  Location,
+  Setting
+} from '@element-plus/icons-vue'
+
+export default {
+  data() {
+    return {
+      isMobileFlag: false,
+      navItems: [
+        { text: 'AiTool', link: '#/?tag=ai', icon: 'icon-home' }
+        // { text: '快命令', link: '#/user/userCmds', icon: 'icon-cog' },
+        // { text: '收藏', link: '#/user/collect', icon: 'icon-cog' },
+        // { text: '我的', link: '#/layout/person', icon: 'icon-gift' },
+      ],
+      activeIndex: -1
+    }
+  },
+  mounted() {
+    this.isMobileFlag = isMobile()
+  },
+  methods: {
+    handleMouseover(index) {
+      this.activeIndex = index
+    }
+  }
+}
+</script>
 <style lang="scss" scoped>
 nav {
   background-color: #272929;
@@ -31,7 +70,7 @@ nav {
       width: 160px;
     }
   }
-  .logo-mobile{
+  .logo-mobile {
     margin-right: 0px;
     img {
       height: 60px;
@@ -79,39 +118,22 @@ nav {
       }
     }
   }
-}
-</style>
-
-<script>
-import {isMobile}  from '@/utils/page.js'
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting
-} from '@element-plus/icons-vue'
-
-
-export default {
-  data() {
-    return {
-      isMobileFlag: false,
-      navItems: [
-        { text: 'AiTool', link: '#/?tag=ai', icon: 'icon-home' },
-        // { text: '快命令', link: '#/user/userCmds', icon: 'icon-cog' },
-        // { text: '收藏', link: '#/user/collect', icon: 'icon-cog' },
-        // { text: '我的', link: '#/layout/person', icon: 'icon-gift' },
-      ],
-      activeIndex: -1
+  .me {
+    flex: 1;
+    text-align: right;
+    vertical-align: baseline;
+    margin-right: 20px;
+    line-height: 80px;
+    color: #fff;
+    font-size: 16px;
+    width: 100px;
+    div {
+      display: inline-block;
+      cursor: pointer;
     }
-  },
-  mounted(){
-    this.isMobileFlag = isMobile()
-  },
-  methods: {
-    handleMouseover(index) {
-      this.activeIndex = index
+    div:last-child {
+      margin-left: 20px;
     }
   }
 }
-</script>
+</style>

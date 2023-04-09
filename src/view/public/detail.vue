@@ -1,13 +1,23 @@
 <template>
   <div class="article">
     <div class="image-container">
-      <img :src="article.icon" alt="Article Image">
+      <img :src="article.icon" alt="Article Image" />
     </div>
     <div class="content-container">
       <h1>{{ article.name }}</h1>
       <div class="info">
-        <span>访问地址: <a :href="toolPackage.apiUrl" target="_blank" style="color:#62EBF4"> {{ toolPackage.apiUrl }}</a></span>
-        <span>Date: {{ article.CreatedAt }}</span>
+        <span
+          >访问地址:
+          <a :href="toolPackage.apiUrl" target="_blank" style="color: #62ebf4">
+            {{ toolPackage.apiUrl }}</a
+          ></span
+        >
+        <!-- <span>Date: {{ article.CreatedAt }}</span> -->
+        <div @click="collect">
+          <el-icon><Star /></el-icon>
+
+          <i>{{ isshow ? '取消收藏' : '加入收藏' }} </i>
+        </div>
         <div class="tags">
           <span>{{ article.tags }}</span>
           <!-- <span v-for="(tag, index) in article.tags" :key="index">{{ tag }}</span> -->
@@ -18,17 +28,24 @@
       <p>{{ article.desc }}</p>
     </div>
 
-   <div v-if="article.attr=='innnerComponent'" style="display:block; ">
-      <async-component :innerComp='toolPackage.uiData' style="display:block;" ></async-component>
-   </div>
+    <div v-if="article.attr == 'innnerComponent'" style="display: block">
+      <async-component
+        :innerComp="toolPackage.uiData"
+        style="display: block"
+      ></async-component>
+    </div>
 
-    <div v-if="article.attr=='iframe'">
-      <div class="workbench" :class="{ 'max': isMaxWorkbench }">
+    <div v-if="article.attr == 'iframe'">
+      <div class="workbench" :class="{ max: isMaxWorkbench }">
         <el-row>
-          <el-col :span="5" @click="expandWorkbench" class="btn"> 放大功能区 </el-col>
-          <el-col :span="5" @click="reduceWorkbench" class="btn"> 缩小功能区 </el-col>
+          <el-col :span="5" @click="expandWorkbench" class="btn">
+            放大功能区
+          </el-col>
+          <el-col :span="5" @click="reduceWorkbench" class="btn">
+            缩小功能区
+          </el-col>
         </el-row>
-        <iframe :src='toolPackage.apiUrl' width="100%" height="360px"> </iframe>
+        <iframe :src="toolPackage.apiUrl" width="100%" height="360px"> </iframe>
       </div>
     </div>
 
@@ -41,8 +58,8 @@
 <script>
 import Recommends from './components/recommend.vue'
 import AsyncComponent from './tools/async-component.vue'
-import { findIndexTool, getRecommendToolList } from "@/api/tools"
-import { findIndexToolPackage } from "@/api/toolPackage"
+import { findIndexTool, getRecommendToolList } from '@/api/tools'
+import { findIndexToolPackage } from '@/api/toolPackage'
 
 export default {
   components: {
@@ -54,46 +71,50 @@ export default {
       article: {},
       toolPackage: {},
       id: 0,
-      isMaxWorkbench: false
+      isMaxWorkbench: false,
+      isshow: false
     }
   },
   watch: {
-     '$route.query.id': function(){
-    	// 只要categoryId的值发生变化,这个方法就会被调用
-      this.id =this.$route.query.id
+    '$route.query.id': function () {
+      // 只要categoryId的值发生变化,这个方法就会被调用
+      this.id = this.$route.query.id
       //重新调用请求数据的方法，刷新页面数据
-      if(this.$route.name == 'Detail'){
+      if (this.$route.name == 'Detail') {
         this.load()
       }
     }
   },
   mounted() {
-    this.id =this.$route.query.id
+    this.id = this.$route.query.id
     this.load()
   },
-  methods:{
-    expandWorkbench(){
+  methods: {
+    expandWorkbench() {
       console.log('expandWorkbench')
       this.isMaxWorkbench = true
     },
-    reduceWorkbench(){
+    reduceWorkbench() {
       console.log('reduceWorkbench')
       this.isMaxWorkbench = false
     },
-    load(){
-      findIndexTool({ID:this.id}).then( res=>{
-        if(res.code == 0 ){
+    load() {
+      findIndexTool({ ID: this.id }).then((res) => {
+        if (res.code == 0) {
           this.article = res.data.retools
-          console.log('---' , this.article)
+          console.log('---', this.article)
         }
       })
 
-      findIndexToolPackage({ID: this.id}).then( res=> {
-        if(res.code == 0 ){
+      findIndexToolPackage({ ID: this.id }).then((res) => {
+        if (res.code == 0) {
           this.toolPackage = res.data.retoolPackage
-          console.log('---toolPackage' , this.toolPackage)
+          console.log('---toolPackage', this.toolPackage)
         }
       })
+    },
+    collect() {
+      this.isshow = !this.isshow
     }
   }
 }
@@ -142,6 +163,14 @@ export default {
         display: block;
         margin-bottom: 10px;
       }
+      i {
+        font-style: normal;
+        margin-right: 5px;
+        font-size: 16px;
+      }
+      .el-icon {
+        vertical-align: text-top;
+      }
 
       .tags {
         margin-top: 10px;
@@ -158,24 +187,27 @@ export default {
     }
   }
 
-  .body{
+  .body {
     background-color: #272929;
     padding: 10px;
     border-radius: 15px;
     margin-bottom: 5px;
   }
-  .body p{
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  .body p {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif,
+      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+      'Noto Color Emoji';
     font-size: 16px;
     min-height: 50px;
-    color: #616A72;
+    color: #616a72;
     text-indent: 2em;
     line-height: 2em;
     margin-top: 25px;
   }
 
-  .workbench{
-    .btn{
+  .workbench {
+    .btn {
       font-weight: 600;
       cursor: pointer;
       padding: 8px 0px;
@@ -183,25 +215,24 @@ export default {
       text-align: center;
       background: #333232;
     }
-    iframe{
-      border:none
+    iframe {
+      border: none;
     }
   }
 
   .max {
-     position: fixed;
-     display: block;
-     left: 0;
-     top: 0;
-     width: 100%;
-     height: 100%;
-     z-index: 10000;
-     background-color: #272929;
-     opacity: 0.99;
-     iframe{
-        height: calc(100vh - 80px);
-     }
+    position: fixed;
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background-color: #272929;
+    opacity: 0.99;
+    iframe {
+      height: calc(100vh - 80px);
+    }
   }
-
 }
 </style>
