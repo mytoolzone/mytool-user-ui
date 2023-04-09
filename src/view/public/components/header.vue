@@ -15,7 +15,7 @@
       </li>
     </ul>
     <div class="me">
-      <div @click="">我的收藏</div>
+      <div @click="collections">我的收藏</div>
       <div>
         <el-icon><User /></el-icon> 我的
       </div>
@@ -48,9 +48,15 @@ export default {
   mounted() {
     this.isMobileFlag = isMobile()
   },
+
   methods: {
     handleMouseover(index) {
       this.activeIndex = index
+    },
+    collections() {
+      this.$router.push({
+        name: 'Collections'
+      })
     }
   }
 }
