@@ -13,11 +13,10 @@
           </a>
         </div>
         <div class="headerRight">
-          <a href="/./register" class="headerRightLogin shuxian">
+          <a @click="isRegister=true" class="headerRightLogin shuxian">
             <span>注册</span>
           </a>
-
-          <a href="/boss/" class="headerRightLogin"><span>首页</span> </a>
+          <a href="/" class="headerRightLogin"><span>首页</span> </a>
         </div>
       </div>
 
@@ -48,7 +47,7 @@
             />
           </el-form-item>
           <el-form-item
-            v-if="loginFormData.isPasswordShow"
+            v-if="isRegister"
             prop="confirmPassword"
           >
             <el-input
@@ -71,6 +70,7 @@
                 <img
                   v-if="picPath"
                   :src="picPath"
+                  style="width:100px"
                   alt="请输入验证码"
                   @click="loginVerify()"
                 />
@@ -84,27 +84,28 @@
           </el-form-item>
           <el-form-item>
             <el-button
+              v-if="isRegister"
               type="primary"
-              style="width: 46%"
+              style="width: 100%"
               size="large"
-              @click="checkInit"
+              @click="register"
             >
               注册
             </el-button>
             <el-button
+              v-if="!isRegister"
               type="primary"
               size="large"
-              style="width: 46%; margin-left: 8%"
+              style="width: 100%;"
               @click="submitForm"
             >
               登 录
             </el-button>
           </el-form-item>
           <el-form-item class="mb10">
-            <el-link :underline="false" class="mr10" @click="checkInit"
-              >没有账号 注册</el-link
-            >
-
+            <el-link  v-if="!isRegister" :underline="false" class="mr10" @click="isRegister = true">没有账号注册</el-link>
+            <el-link  v-if="isRegister" :underline="false" class="mr10" @click="isRegister = false">跳到登陆</el-link>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <el-link :underline="false">找回密码</el-link>
           </el-form-item>
         </el-form>
@@ -113,13 +114,14 @@
   </div>
 </template>
 <script setup>
-import { captcha } from '@/api/user'
+import { captcha ,registerUser} from '@/api/user'
 import { checkDB } from '@/api/initdb'
 
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/pinia/modules/user'
+
 const router = useRouter()
 // 验证函数
 const checkUsername = (rule, value, callback) => {
@@ -157,14 +159,17 @@ loginVerify()
 const loginForm = ref(null)
 const picPath = ref('')
 const checked = ref(false)
+const isRegister = ref(false)
+
 const loginFormData = reactive({
-  username: 'admin',
-  password: '123456',
+  username: '',
+  password: '',
   captcha: '',
   captchaId: '',
   openCaptcha: false,
-  isPasswordShow: false
+  confirmPassword: ''
 })
+
 const rules = reactive({
   username: [{ validator: checkUsername, trigger: 'blur' }],
   password: [{ validator: checkPassword, trigger: 'blur' }],
@@ -215,6 +220,53 @@ const checkInit = async () => {
     }
   }
 }
+
+const registerApi = async () => {
+  return await userStore.LoginIn(loginFormData)
+}
+
+const register = async () => {
+  console.log('register', loginFormData)
+  if(loginFormData.password != loginFormData.confirmPassword) {
+        ElMessage({
+          type: 'error',
+          message: '两次输入的密码不一致',
+          showClose: true
+        })
+    return
+  }
+
+  loginForm.value.validate(async (v) => {
+    if (v) {
+      const resp = await registerUser(loginFormData)
+      if (resp.code ===0) {
+        ElMessage({
+          type: 'success',
+          message: '注册成功, 请登陆',
+          showClose: true
+        })
+        isRegister.value = false
+        return
+      }else{
+        ElMessage({
+          type: 'error',
+          message: resp.msg,
+          showClose: true
+        })
+      }
+    } else {
+      ElMessage({
+        type: 'error',
+        message: '请正确填写注册信息',
+        showClose: true
+      })
+      return false
+    }
+  })
+}
+
+
+
 </script>
 <style scoped lang="scss">
 .loginCcontainer {
