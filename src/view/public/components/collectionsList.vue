@@ -106,7 +106,7 @@ export default {
   position: absolute;
   width: 4px;
   height: 19px;
-  left: -14 px;
+  left: -14px;
   bottom: 0;
   background: rgba(227, 78, 62, 0.7);
   top: 40%; /*Y轴方向偏移自身高度的50%*/
