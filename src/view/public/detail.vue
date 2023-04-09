@@ -18,8 +18,8 @@
       <p>{{ article.desc }}</p>
     </div>
 
-   <div v-if="article.attr=='innnerComponent'">
-      <async-component :innerComp='toolPackage.uiData'></async-component>
+   <div v-if="article.attr=='innnerComponent'" style="display:block; ">
+      <async-component :innerComp='toolPackage.uiData' style="display:block;" ></async-component>
    </div>
 
     <div v-if="article.attr=='iframe'">

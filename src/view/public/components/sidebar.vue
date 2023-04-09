@@ -10,7 +10,19 @@
     @close="handleClose"
     :collapse="isMobileFlag"
   >
-      <el-menu-item v-for="(tag,index) in tags" :index="tag.value" @click="chooseMenu(tag.value)"> {{tag.label}} </el-menu-item>
+      <el-menu-item v-for="(tag,index) in tags" :index="tag.value" @click="chooseMenu(tag.value)"> 
+        <el-icon><setting />
+          <span v-show="isMobileFlag" style="font-size:5px">
+            {{tag.label}} 
+          </span>  
+        </el-icon>
+        <template #title v-show="!isMobileFlag">
+          <span v-show="!isMobileFlag">
+            {{tag.label}} 
+          </span>  
+
+        </template>
+      </el-menu-item>
   </el-menu>
 
   <el-menu
@@ -64,6 +76,7 @@ export default {
       isOpenAbout: false,
       isOpenTellUs: false,
       isMobileFlag: false,
+      isCollapse: false,
       tags:[]
     };
   },

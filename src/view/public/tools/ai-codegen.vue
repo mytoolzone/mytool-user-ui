@@ -1,19 +1,23 @@
 <template>
   <div class="tool-form-body">
-    <h2>Ai写作</h2>
+    <h2>Ai代码生成</h2>
     <el-form>
-
-      <el-form-item class="form-item" label="作文题目：">
-        <el-input v-model="form.compositionTitle" placeholder="请输入作文题目"></el-input>
+      <el-form-item class="form-item" label="咨询问题:">
+        <el-input v-model="form.content" placeholder="写一个限流器"></el-input>
       </el-form-item>
 
-      <el-form-item class="form-item" label="作文字数：">
-        <el-input v-model="form.compositionWordNumber" placeholder="请输入作文字数"></el-input>
-      </el-form-item>
-
-
-      <el-form-item class="form-item" label="作文提纲：">
-        <el-input v-model="form.compositionOutline" placeholder="请输入作文提纲"></el-input>
+      <el-form-item class="form-item" label="目标语言:">
+        <el-radio-group v-model="form.language">
+          <el-radio label="golang">golang</el-radio>
+          <el-radio label="js">js</el-radio>
+          <el-radio label="java">java</el-radio>
+          <el-radio label="python">python</el-radio>
+          <el-radio label="c++">c++</el-radio>
+          <el-radio label="c">c</el-radio>
+          <el-radio label="php">php</el-radio>
+          <el-radio label="rust">rust</el-radio>
+          <el-radio label="c#">C#</el-radio>
+        </el-radio-group>
       </el-form-item>
 
       <div class="form-item">
@@ -27,11 +31,9 @@
       </div>
     </el-form>
     <div>
-      <h2>Ai安排结果</h2>
+      <h2>Ai回复</h2>
       <div class="ai-result">
-        <pre width="50">
-          {{ aiAnswer }}
-        </pre>
+        <pre width="50">{{ aiAnswer }}</pre>
       </div>
     </div>
   </div>
@@ -46,9 +48,8 @@ export default {
   name: 'TravelForm',
   setup() {
     const form = ref({
-      compositionTitle: '我的妈妈',
-      compositionWordNumber: '500',
-      compositionOutline: '外貌描写',
+      content: '',
+      language: '',
       hotels: [],
       loading: ref(true)
     })
@@ -58,8 +59,8 @@ export default {
     const submitForm = () => {
       console.log('submitForm', form.value)
       let val = form.value
-      let input = `请制定一个作文题目为 ${val.compositionTitle}作文字数${val.compositionWordNumber}的作文，写${val.compositionOutline}的`
-      // console.log(input)
+      let input = `我想让你充当软件开发人员帮助我写一些代码，使用开发语言是${val.language}。我的第一个请求是“${val.content}”`
+      console.log(input)
       const loading = ElLoading.service({
         lock: true,
         text: 'Loading',

@@ -1,21 +1,10 @@
 <template>
   <div class="tool-form-body">
-    <h2>Ai写作</h2>
+    <h2>Ai电脑助手</h2>
     <el-form>
-
-      <el-form-item class="form-item" label="作文题目：">
-        <el-input v-model="form.compositionTitle" placeholder="请输入作文题目"></el-input>
+      <el-form-item class="form-item" label="电脑故障">
+        <el-input v-model="form.content" placeholder="我的笔记本电脑出现蓝屏错误"></el-input>
       </el-form-item>
-
-      <el-form-item class="form-item" label="作文字数：">
-        <el-input v-model="form.compositionWordNumber" placeholder="请输入作文字数"></el-input>
-      </el-form-item>
-
-
-      <el-form-item class="form-item" label="作文提纲：">
-        <el-input v-model="form.compositionOutline" placeholder="请输入作文提纲"></el-input>
-      </el-form-item>
-
       <div class="form-item">
         <el-button
           type="primary"
@@ -27,11 +16,9 @@
       </div>
     </el-form>
     <div>
-      <h2>Ai安排结果</h2>
+      <h2>Ai回复</h2>
       <div class="ai-result">
-        <pre width="50">
-          {{ aiAnswer }}
-        </pre>
+        <pre width="50">{{ aiAnswer }}</pre>
       </div>
     </div>
   </div>
@@ -46,9 +33,7 @@ export default {
   name: 'TravelForm',
   setup() {
     const form = ref({
-      compositionTitle: '我的妈妈',
-      compositionWordNumber: '500',
-      compositionOutline: '外貌描写',
+      content: '',
       hotels: [],
       loading: ref(true)
     })
@@ -58,7 +43,7 @@ export default {
     const submitForm = () => {
       console.log('submitForm', form.value)
       let val = form.value
-      let input = `请制定一个作文题目为 ${val.compositionTitle}作文字数${val.compositionWordNumber}的作文，写${val.compositionOutline}的`
+      let input = `我希望你充当 IT 专家。我会向您提供有关我的技术问题所需的所有信息，而您的职责是解决我的问题。你应该使用你的计算机科学、网络基础设施和 IT 安全知识来解决我的问题。在您的回答中使用适合所有级别的人的智能、简单和易于理解的语言将很有帮助。用要点逐步解释您的解决方案很有帮助。尽量避免过多的技术细节，但在必要时使用它们。我希望您回复解决方案，而不是写任何解释。我的第一个请求是“${val.content}”`
       // console.log(input)
       const loading = ElLoading.service({
         lock: true,

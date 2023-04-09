@@ -2,10 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
-    path: '/login',
-    redirect: '/login'
-  },
-  {
     path: '/',
     name: 'Public',
     component: () => import('@/view/public/index.vue'),
@@ -19,12 +15,6 @@ const routes = [
         path: '/detail',
         name: 'Detail',
         component: () => import('@/view/public/detail.vue')
-      },
-      {
-        path: '/aiWrite',
-        name: 'AiWrite',
-
-        component: () => import('@/view/public/tools/ai-write.vue')
       }
     ]
   },

@@ -6,7 +6,8 @@
     <ul>
       <li v-for="(item, index) in navItems" :key="index">
         <a :href="item.link" @mouseover="handleMouseover(navItems.length - index - 1)">
-          <i class="iconfont"></i>
+          <!-- <el-icon><setting /></el-icon> -->
+
           {{ item.text }}
           <span v-show="navItems.length - index - 1 === activeIndex">▼</span>
         </a>
@@ -83,6 +84,13 @@ nav {
 
 <script>
 import {isMobile}  from '@/utils/page.js'
+import {
+  Document,
+  Menu as IconMenu,
+  Location,
+  Setting
+} from '@element-plus/icons-vue'
+
 
 export default {
   data() {

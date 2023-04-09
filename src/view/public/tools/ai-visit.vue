@@ -1,47 +1,48 @@
 <template>
-  <div class="travel-form">
+  <div class="travel-body" >
     <h2>出行旅游常用安排</h2>
-    <el-form>
+    <div > 
+          <el-form>
       <!-- <div class="form-item">
         <label>出发日期：</label>
         <el-date-picker v-model="form.departureDate" type="date" placeholder="请选择出发日期"></el-date-picker>
       </div> -->
-      <div class="form-item">
-        <label>出发城市：</label>
+      <el-form-item class="form-item" label="出发城市：">
         <el-input v-model="form.departureCity" placeholder="请输入出发城市"></el-input>
-      </div>
-      <div class="form-item">
-        <label>到达城市：</label>
+      </el-form-item>
+
+      <el-form-item class="form-item" label="到达城市：">
         <el-input v-model="form.arrivalCity" placeholder="请输入到达城市"></el-input>
-      </div>
-      <div class="form-item">
-        <label> 出游时长：</label>
-        <el-input v-model="form.day" placeholder="请输入你打算玩几天"> </el-input>
-      </div>
-      <div class="form-item">
-        <label>交通方式：</label>
-        <br>
+      </el-form-item>
+
+      <el-form-item class="form-item" label="出游时长：">
+        <el-input v-model="form.day" placeholder="请输入你打算玩几天"></el-input>
+      </el-form-item>
+
+      <el-form-item class="form-item" label="交通方式：">
         <el-radio-group v-model="form.transportation">
           <el-radio label="飞机">飞机</el-radio>
           <el-radio label="火车">火车</el-radio>
           <el-radio label="汽车">汽车</el-radio>
           <el-radio label="自驾">自驾</el-radio>
         </el-radio-group>
-      </div>
+      </el-form-item>
+
       <!-- <div class="form-item">
         <label>备注：</label>
         <el-input v-model="form.remarks" type="textarea" placeholder="请输入备注信息"></el-input>
       </div> -->
-      <div class="form-item">
+      <el-form-item class="form-item">
         <el-button type="primary" @click="submitForm" v-loading.fullscreen.lock="loading">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
-      </div>
-    </el-form>
-    <div>
+      </el-form-item>
+     </el-form>
+    </div>
+    <div style="clear:both">
       <h2>Ai安排结果</h2>
-      <pre>
+      <div class="pre">
         {{aiAnswer}}
-      </pre>
+      </div>
     </div>
   </div>
 </template>
@@ -114,11 +115,12 @@ export default {
 };
 </script>
 
-<style>
-.travel-form {
+<style scoped>
+.travel-body {
   max-width: 800px;
   padding: 15px;
   margin: 0 auto;
+  display: block;
 }
 
 .form-item {
@@ -131,9 +133,12 @@ label {
   text-align: right;
   margin-right: 10px;
 }
-pre{
+.pre{
   padding: 15px;
-  border: 1px solid #fff;
   min-height: 100px;
+  border: 1px solid #fff;
+  display: block;
+  white-space: pre-wrap; 
+  word-wrap: break-word; 
 }
 </style>

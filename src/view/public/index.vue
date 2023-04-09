@@ -59,6 +59,7 @@ export default {
   width: 100%;
   height: 80px;
   position: fixed;
+  z-index: 1000;
 }
 
 .sidebar {

@@ -1,21 +1,10 @@
 <template>
   <div class="tool-form-body">
-    <h2>Ai写作</h2>
+    <h2>Ai面试官</h2>
     <el-form>
-
-      <el-form-item class="form-item" label="作文题目：">
-        <el-input v-model="form.compositionTitle" placeholder="请输入作文题目"></el-input>
+      <el-form-item class="form-item" label="面试岗位">
+        <el-input v-model="form.content" placeholder="前端开发工程师"></el-input>
       </el-form-item>
-
-      <el-form-item class="form-item" label="作文字数：">
-        <el-input v-model="form.compositionWordNumber" placeholder="请输入作文字数"></el-input>
-      </el-form-item>
-
-
-      <el-form-item class="form-item" label="作文提纲：">
-        <el-input v-model="form.compositionOutline" placeholder="请输入作文提纲"></el-input>
-      </el-form-item>
-
       <div class="form-item">
         <el-button
           type="primary"
@@ -27,11 +16,9 @@
       </div>
     </el-form>
     <div>
-      <h2>Ai安排结果</h2>
+      <h2>Ai回复</h2>
       <div class="ai-result">
-        <pre width="50">
-          {{ aiAnswer }}
-        </pre>
+        <pre width="50">{{ aiAnswer }}</pre>
       </div>
     </div>
   </div>
@@ -46,9 +33,7 @@ export default {
   name: 'TravelForm',
   setup() {
     const form = ref({
-      compositionTitle: '我的妈妈',
-      compositionWordNumber: '500',
-      compositionOutline: '外貌描写',
+      content: '',
       hotels: [],
       loading: ref(true)
     })
@@ -58,7 +43,7 @@ export default {
     const submitForm = () => {
       console.log('submitForm', form.value)
       let val = form.value
-      let input = `请制定一个作文题目为 ${val.compositionTitle}作文字数${val.compositionWordNumber}的作文，写${val.compositionOutline}的`
+      let input = `我想让你做我的面试官。我想要面试岗位是“${val.content},你要出10道考题”`
       // console.log(input)
       const loading = ElLoading.service({
         lock: true,
