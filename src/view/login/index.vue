@@ -13,7 +13,7 @@
           </a>
         </div>
         <div class="headerRight">
-          <a @click="isRegister=true" class="headerRightLogin shuxian">
+          <a @click="isRegister = true" class="headerRightLogin shuxian">
             <span>注册</span>
           </a>
           <a href="/" class="headerRightLogin"><span>首页</span> </a>
@@ -46,10 +46,7 @@
               placeholder="请输入密码"
             />
           </el-form-item>
-          <el-form-item
-            v-if="isRegister"
-            prop="confirmPassword"
-          >
+          <el-form-item v-if="isRegister" prop="confirmPassword">
             <el-input
               v-model="loginFormData.confirmPassword"
               show-password
@@ -70,7 +67,7 @@
                 <img
                   v-if="picPath"
                   :src="picPath"
-                  style="width:100px"
+                  style="width: 100px"
                   alt="请输入验证码"
                   @click="loginVerify()"
                 />
@@ -96,15 +93,27 @@
               v-if="!isRegister"
               type="primary"
               size="large"
-              style="width: 100%;"
+              style="width: 100%"
               @click="submitForm"
             >
               登 录
             </el-button>
           </el-form-item>
           <el-form-item class="mb10">
-            <el-link  v-if="!isRegister" :underline="false" class="mr10" @click="isRegister = true">没有账号注册</el-link>
-            <el-link  v-if="isRegister" :underline="false" class="mr10" @click="isRegister = false">跳到登陆</el-link>
+            <el-link
+              v-if="!isRegister"
+              :underline="false"
+              class="mr10"
+              @click="isRegister = true"
+              >没有账号注册</el-link
+            >
+            <el-link
+              v-if="isRegister"
+              :underline="false"
+              class="mr10"
+              @click="isRegister = false"
+              >跳到登陆</el-link
+            >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <el-link :underline="false">找回密码</el-link>
           </el-form-item>
@@ -114,7 +123,7 @@
   </div>
 </template>
 <script setup>
-import { captcha ,registerUser} from '@/api/user'
+import { captcha, registerUser } from '@/api/user'
 import { checkDB } from '@/api/initdb'
 
 import { reactive, ref } from 'vue'
@@ -227,19 +236,19 @@ const registerApi = async () => {
 
 const register = async () => {
   console.log('register', loginFormData)
-  if(loginFormData.password != loginFormData.confirmPassword) {
-        ElMessage({
-          type: 'error',
-          message: '两次输入的密码不一致',
-          showClose: true
-        })
+  if (loginFormData.password != loginFormData.confirmPassword) {
+    ElMessage({
+      type: 'error',
+      message: '两次输入的密码不一致',
+      showClose: true
+    })
     return
   }
 
   loginForm.value.validate(async (v) => {
     if (v) {
       const resp = await registerUser(loginFormData)
-      if (resp.code ===0) {
+      if (resp.code === 0) {
         ElMessage({
           type: 'success',
           message: '注册成功, 请登陆',
@@ -247,7 +256,7 @@ const register = async () => {
         })
         isRegister.value = false
         return
-      }else{
+      } else {
         ElMessage({
           type: 'error',
           message: resp.msg,
@@ -264,9 +273,6 @@ const register = async () => {
     }
   })
 }
-
-
-
 </script>
 <style scoped lang="scss">
 .loginCcontainer {
