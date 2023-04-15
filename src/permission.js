@@ -42,6 +42,7 @@ router.beforeEach(async (to, from) => {
   to.meta.matched = [...to.matched]
   handleKeepAlive(to)
   const token = userStore.token
+  console.log('token -----', token)
   // 在白名单中的判断情况
   document.title = getPageTitle(to.meta.title, to)
   console.log('to.name',to.name, whiteList.indexOf(to.name)  ,token)
@@ -61,13 +62,13 @@ router.beforeEach(async (to, from) => {
         //return { name: 'Index' }
       } else {
         // 强制退出账号
-        userStore.ClearStorage()
-        return {
-          name: 'Login',
-          query: {
-            redirect: document.location.hash
-          }
-        }
+        //userStore.ClearStorage()
+        // return {
+        //   name: 'Login',
+        //   query: {
+        //     redirect: document.location.hash
+        //   }
+        // }
       }
     } else {
       return true

@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { getIndexToolList } from '@/api/tools'
+import { getUserCollectToolsList } from '@/api/userCollectTools'
+
 
 export default {
   name: 'MyPage',
@@ -48,7 +49,7 @@ export default {
   },
   mounted() {
     this.tag = this.$route.query.tag
-    this.getIndexToolList()
+    this.getUserCollectToolsList()
   },
   watch: {
     '$route.query.tag': function () {
@@ -56,7 +57,7 @@ export default {
       this.tag = this.$route.query.tag
       //重新调用请求数据的方法，刷新页面数据
       if (this.$route.name == 'Index') {
-        this.getIndexToolList()
+        this.getUserCollectToolsList()
       }
     },
     '$route.query.keyword': function () {
@@ -64,13 +65,13 @@ export default {
       this.keyword = this.$route.query.keyword
       //重新调用请求数据的方法，刷新页面数据
       if (this.$route.name == 'Index') {
-        this.getIndexToolList()
+        this.getUserCollectToolsList()
       }
     }
   },
   methods: {
-    async getIndexToolList() {
-      let toolList = await getIndexToolList({
+    async getUserCollectToolsList() {
+      let toolList = await getUserCollectToolsList({
         tags: this.tag,
         keyword: this.keyword
       })

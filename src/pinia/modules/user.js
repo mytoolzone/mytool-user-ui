@@ -24,15 +24,17 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const setToken = (val) => {
+    console.log('setToken ---' , val)
     token.value = val
+    window.localStorage.setItem('token', val)
   }
 
-  const NeedInit = () => {
-    token.value = ''
-    window.localStorage.removeItem('token')
-    localStorage.clear()
-    router.push({ name: 'Init', replace: true })
-  }
+  // const NeedInit = () => {
+  //   token.value = ''
+  //   window.localStorage.removeItem('token')
+  //   localStorage.clear()
+  //   router.push({ name: 'Init', replace: true })
+  // }
 
   const ResetUserInfo = (value = {}) => {
     userInfo.value = {
@@ -59,6 +61,7 @@ export const useUserStore = defineStore('user', () => {
       if (res.code === 0) {
         setUserInfo(res.data.user)
         setToken(res.data.token)
+
         // const routerStore = useRouterStore()
         // await routerStore.SetAsyncRouter()
         // const asyncRouters = routerStore.asyncRouters
@@ -133,7 +136,7 @@ export const useUserStore = defineStore('user', () => {
   return {
     userInfo,
     token,
-    NeedInit,
+    //NeedInit,
     ResetUserInfo,
     GetUserInfo,
     LoginIn,

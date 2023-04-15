@@ -60,6 +60,8 @@ import Recommends from './components/recommend.vue'
 import AsyncComponent from './tools/async-component.vue'
 import { findIndexTool, getRecommendToolList } from '@/api/tools'
 import { findIndexToolPackage } from '@/api/toolPackage'
+import { createUserCollectTools, deleteUserCollectTools,findUserCollectTool} from '@/api/userCollectTools'
+import { useUserStore } from '@/pinia/modules/user'
 
 export default {
   components: {
@@ -112,8 +114,24 @@ export default {
           console.log('---toolPackage', this.toolPackage)
         }
       })
+
+      findUserCollectTool( {toolId: parseInt(this.id)}).then( res => {
+        console.log('res ==>' , res)
+        if(res.data.reuserCollectTools.ID > 0 ){
+           this.isCollect = true
+        }else{
+          this.isCollect = false
+        }
+      })
     },
     collect() {
+      const userStore = useUserStore()
+
+      if(!this.isCollect){
+        createUserCollectTools({ toolId: parseInt(this.id) })
+      }else{
+        deleteUserCollectTools({ toolId: parseInt(this.id) })
+      }
       this.isCollect = !this.isCollect
     }
   }
