@@ -191,9 +191,13 @@ const rules = reactive({
 })
 
 const userStore = useUserStore()
+
 const login = async () => {
-  return await userStore.LoginIn(loginFormData)
+  let flag = await userStore.LoginIn(loginFormData)
+  router.push({name:'Index'})
+  return flag
 }
+
 const submitForm = () => {
   loginForm.value.validate(async (v) => {
     if (v) {
@@ -213,22 +217,7 @@ const submitForm = () => {
   })
 }
 
-// 跳转初始化
-const checkInit = async () => {
-  loginFormData.isPasswordShow = true
-  const res = await checkDB()
-  if (res.code === 0) {
-    if (res.data?.needInit) {
-      userStore.NeedInit()
-      router.push({ name: 'Init' })
-    } else {
-      ElMessage({
-        type: 'info',
-        message: '已配置数据库信息，无法初始化'
-      })
-    }
-  }
-}
+
 
 const registerApi = async () => {
   return await userStore.LoginIn(loginFormData)

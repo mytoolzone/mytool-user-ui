@@ -16,8 +16,8 @@
     </ul>
     <div class="me">
       <div @click="collections">我的收藏</div>
-      <div>
-        <el-icon><User /></el-icon> 我的
+      <div @click="gotoPerson">
+        <el-icon ><User /></el-icon> 我的
       </div>
     </div>
   </nav>
@@ -56,6 +56,11 @@ export default {
     collections() {
       this.$router.push({
         name: 'Collections'
+      })
+    },
+    gotoPerson() {
+      this.$router.push({
+        name: 'Safe'
       })
     }
   }

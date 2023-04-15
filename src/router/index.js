@@ -2,6 +2,11 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
+    path: '/home',
+    name: 'Home',
+    component: () => import('@/view/public/home.vue'),
+  },
+  {
     path: '/',
     name: 'Public',
     component: () => import('@/view/public/index.vue'),
@@ -20,13 +25,18 @@ const routes = [
         path: '/Collections',
         name: 'Collections',
         component: () => import('@/view/public/components/collectionsList.vue')
-      }
+      },
+      {
+        path: '/person',
+        name: 'Person',
+        component: () => import('@/view/person/person.vue')
+      },
+      {
+        path: '/safe',
+        name: 'Safe',
+        component: () => import('@/view/person/safe.vue')
+      },
     ]
-  },
-  {
-    path: '/init',
-    name: 'Init',
-    component: () => import('@/view/init/index.vue')
   },
   {
     path: '/login',

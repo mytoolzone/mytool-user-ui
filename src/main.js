@@ -4,8 +4,8 @@ import './core/gin-vue-admin'
 // 引入封装的router
 import router from '@/router/index'
 import '@/permission'
-import run from '@/core/gin-vue-admin.js'
-import auth from '@/directive/auth'
+//import run from '@/core/gin-vue-admin.js'
+//import auth from '@/directive/auth'
 import { store } from '@/pinia'
 import App from './App.vue'
 import { initDom } from './utils/positionToCode'
@@ -20,32 +20,23 @@ initDom()
  * @description 导入加载进度条，防止首屏加载时间过长，用户等待
  *
  * */
-import Nprogress from 'nprogress'
-import 'nprogress/nprogress.css'
-Nprogress.configure({ showSpinner: false, ease: 'ease', speed: 500 })
-Nprogress.start()
+// import Nprogress from 'nprogress'
+// import 'nprogress/nprogress.css'
+// Nprogress.configure({ showSpinner: false, ease: 'ease', speed: 500 })
+// Nprogress.start()
 
 /**
  * 无需在这块结束，会在路由中间件中结束此块内容
  * */
 
-// 导入form-create
-import formCreate from '@form-create/element-ui'
-import FcDesigner from '@form-create/designer'
-
-
-
 const app = createApp(App)
 app.config.productionTip = false
 
 app
-  .use(run)
+  //.use(run)
   .use(store)
-  .use(auth)
+  //.use(auth)
   .use(router)
   .mount('#app')
-// 导入form-create
-app.use(formCreate)
-app.use(FcDesigner)
 
 export default app

@@ -16,7 +16,7 @@
         <div @click="collect">
           <el-icon><Star /></el-icon>
 
-          <i>{{ isshow ? '取消收藏' : '加入收藏' }} </i>
+          <i>{{ isCollect ? '取消收藏' : '加入收藏' }} </i>
         </div>
         <div class="tags">
           <span>{{ article.tags }}</span>
@@ -72,7 +72,7 @@ export default {
       toolPackage: {},
       id: 0,
       isMaxWorkbench: false,
-      isshow: false
+      isCollect: false
     }
   },
   watch: {
@@ -114,7 +114,7 @@ export default {
       })
     },
     collect() {
-      this.isshow = !this.isshow
+      this.isCollect = !this.isCollect
     }
   }
 }

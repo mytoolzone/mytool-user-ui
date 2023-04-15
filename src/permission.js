@@ -4,7 +4,7 @@ import getPageTitle from '@/utils/page'
 import router from '@/router'
 import Nprogress from 'nprogress'
 
-const whiteList = ['Login', 'Init', 'Public', 'Index', 'Detail', 'Collections']
+const whiteList = ['Login', 'Init', 'Public', 'Index', 'Detail', 'Collections','Home']
 
 const getRouter = async (userStore) => {
   const routerStore = useRouterStore()
@@ -44,14 +44,21 @@ router.beforeEach(async (to, from) => {
   const token = userStore.token
   // 在白名单中的判断情况
   document.title = getPageTitle(to.meta.title, to)
+  console.log('to.name',to.name, whiteList.indexOf(to.name)  ,token)
   if (whiteList.indexOf(to.name) > -1) {
     if (token) {
+      console.log('123---')
+
       if (!routerStore.asyncRouterFlag && whiteList.indexOf(from.name) < 0) {
-        await getRouter(userStore)
+        //await getRouter(userStore)
       }
       // token 可以解析但是却是不存在的用户 id 或角色 id 会导致无限调用
       if (userStore.userInfo?.authority?.defaultRouter != null) {
-        return { name: userStore.userInfo.authority.defaultRouter }
+        //return { name: userStore.userInfo.authority.defaultRouter }
+
+        console.log('124---')
+        // 去掉下面的 否则会无限循环
+        //return { name: 'Index' }
       } else {
         // 强制退出账号
         userStore.ClearStorage()
@@ -66,11 +73,12 @@ router.beforeEach(async (to, from) => {
       return true
     }
   } else {
+    console.log('123---')
     // 不在白名单中并且已经登录的时候
     if (token) {
       // 添加flag防止多次获取动态路由和栈溢出
       if (!routerStore.asyncRouterFlag && whiteList.indexOf(from.name) < 0) {
-        await getRouter(userStore)
+        //await getRouter(userStore)
         if (userStore.token) {
           return { ...to, replace: true }
         } else {
@@ -89,6 +97,7 @@ router.beforeEach(async (to, from) => {
     }
     // 不在白名单中并且未登录的时候
     if (!token) {
+      console.log('未登陆')
       return {
         name: 'Login',
         query: {

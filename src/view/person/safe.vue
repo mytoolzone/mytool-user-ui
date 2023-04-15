@@ -1,90 +1,131 @@
 <template>
   <div>
-    <div class="fl-left avatar-box">
-        <div class="user-card">
-          <div
-            class="user-headpic-update"
-            :style="{
-              'background-image': `url(${
-                userStore.userInfo.headerImg &&
-                userStore.userInfo.headerImg.slice(0, 4) !== 'http'
-                  ? path + userStore.userInfo.headerImg
-                  : userStore.userInfo.headerImg
-              })`,
-              'background-repeat': 'no-repeat',
-              'background-size': 'cover',
-            }"
-          >
-            <span class="update" @click="openChooseImg">
-              <el-icon>
-                <edit />
-              </el-icon>
-              重新上传</span>
-          </div>
-          <div class="user-personality">
-            <p v-if="!editFlag" class="nickName">
-              {{ userStore.userInfo.nickName }}
-              <el-icon class="pointer" color="#66b1ff" @click="openEdit">
-                <edit />
-              </el-icon>
-            </p>
-            <p v-if="editFlag" class="nickName">
-              <el-input v-model="nickName" />
-              <el-icon class="pointer" color="#67c23a" @click="enterEdit">
-                <check />
-              </el-icon>
-              <el-icon class="pointer" color="#f23c3c" @click="closeEdit">
-                <close />
-              </el-icon>
-            </p>
-            <p class="person-info">这个家伙很懒，什么都没有留下</p>
-          </div>
-          <div class="user-information">
-            <ul>
-              <li>
-                <el-icon>
-                  <user />
-                </el-icon>
-                {{ userStore.userInfo.nickName }}
-              </li>
-              <el-tooltip
-                class="item"
-                effect="light"
-                content="北京"
-                placement="top"
-              >
-                <li>
-                  <el-icon>
-                    <data-analysis />
-                  </el-icon>
-                  openai
-                </li>
-              </el-tooltip>
-              <li>
-                <el-icon>
-                  <video-camera />
-                </el-icon>
-                中国·北京市·朝阳区
-              </li>
-              <el-tooltip
-                class="item"
-                effect="light"
-                content="GoLang/JavaScript/Vue/Gorm"
-                placement="top"
-              >
-                <li>
-                  <el-icon>
-                    <medal />
-                  </el-icon>
-                  change on ai
-                </li>
-              </el-tooltip>
-            </ul>
-          </div>
-        </div>
+
+    <div class="user-addcount">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="账号绑定" name="second">
+          <ul>
+            <li>
+              <p class="title">密保手机</p>
+              <p class="desc">
+                已绑定手机:{{ userStore.userInfo.phone }}
+                <a href="javascript:void(0)" @click="changePhoneFlag = true">立即修改</a>
+              </p>
+            </li>
+            <li>
+              <p class="title">密保邮箱</p>
+              <p class="desc">
+                已绑定邮箱：{{ userStore.userInfo.email }}
+                <a href="javascript:void(0)" @click="changeEmailFlag = true">立即修改</a>
+              </p>
+            </li>
+            <li>
+              <p class="title">修改密码</p>
+              <p class="desc">
+                修改个人密码
+                <a
+                  href="javascript:void(0)"
+                  @click="showPassword = true"
+                >修改密码</a>
+              </p>
+            </li>
+          </ul>
+        </el-tab-pane>
+      </el-tabs>
     </div>
 
     <ChooseImg ref="chooseImgRef" @enter-img="enterImg" />
+
+    <el-dialog
+      v-model="showPassword"
+      title="修改密码"
+      width="360px"
+      @close="clearPassword"
+    >
+      <el-form
+        ref="modifyPwdForm"
+        :model="pwdModify"
+        :rules="rules"
+        label-width="80px"
+      >
+        <el-form-item :minlength="6" label="原密码" prop="password">
+          <el-input v-model="pwdModify.password" show-password />
+        </el-form-item>
+        <el-form-item :minlength="6" label="新密码" prop="newPassword">
+          <el-input v-model="pwdModify.newPassword" show-password />
+        </el-form-item>
+        <el-form-item :minlength="6" label="确认密码" prop="confirmPassword">
+          <el-input v-model="pwdModify.confirmPassword" show-password />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button
+
+            @click="showPassword = false"
+          >取 消</el-button>
+          <el-button
+
+            type="primary"
+            @click="savePassword"
+          >确 定</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="changePhoneFlag" title="绑定手机" width="600px">
+      <el-form :model="phoneForm">
+        <el-form-item label="手机号" label-width="120px">
+          <el-input v-model="phoneForm.phone" placeholder="请输入手机号" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="验证码" label-width="120px">
+          <div class="code-box">
+            <el-input v-model="phoneForm.code" autocomplete="off" placeholder="请自行设计短信服务，此处为模拟随便写" style="width:300px" />
+            <el-button type="primary" :disabled="time>0" @click="getCode">{{ time>0?`(${time}s)后重新获取`:'获取验证码' }}</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button
+
+            @click="closeChangePhone"
+          >取消</el-button>
+          <el-button
+            type="primary"
+
+            @click="changePhone"
+          >更改</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="changeEmailFlag" title="绑定邮箱" width="600px">
+      <el-form :model="emailForm">
+        <el-form-item label="邮箱" label-width="120px">
+          <el-input v-model="emailForm.email" placeholder="请输入邮箱" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="验证码" label-width="120px">
+          <div class="code-box">
+            <el-input v-model="emailForm.code" placeholder="请自行设计邮件服务，此处为模拟随便写" autocomplete="off" style="width:300px" />
+            <el-button type="primary" :disabled="emailTime>0" @click="getEmailCode">{{ emailTime>0?`(${emailTime}s)后重新获取`:'获取验证码' }}</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button
+
+            @click="closeChangeEmail"
+          >取消</el-button>
+          <el-button
+            type="primary"
+
+            @click="changeEmail"
+          >更改</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -301,16 +342,13 @@ const changeEmail = async() => {
 }
 .avatar-box {
   box-shadow: -2px 0 20px -16px;
-  width: 100%;
-  padding: 15px;
-  
-  
+  width: 80%;
   height: 100%;
   .user-card {
     min-height: calc(90vh - 200px);
     padding: 30px 20px;
     text-align: center;
-    background-color: #a9a1a1;
+    background-color: #fff;
     border-radius: 8px;
     flex-shrink: 0;
     .el-avatar {
@@ -331,7 +369,7 @@ const changeEmail = async() => {
       .person-info {
         margin-top: 6px;
         font-size: 14px;
-        color: #f3e5e5;
+        color: #999;
       }
     }
     .user-information {
@@ -362,6 +400,8 @@ const changeEmail = async() => {
 .user-addcount {
   padding: 20px;
   border-radius: 8px;
+  margin: 0 auto;
+  max-width: 420px;
   ul {
     li {
       .title {
@@ -392,10 +432,9 @@ const changeEmail = async() => {
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  background-color: #606266;
   border-radius: 20px;
   &:hover {
-    color: #c9c4c4;
+    color: #fff;
     background: linear-gradient(
         to bottom,
         rgba(255, 255, 255, 0.15) 0%,
