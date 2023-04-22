@@ -8,7 +8,7 @@
     <div class="loginConten">
       <div class="loginHeader">
         <div class="headerLeft">
-          <a href="/boss/" class="">
+          <a href="/user/" class="">
             <img src="https://tools.mytool.zone/logo.png" class="loginLogo" />
           </a>
         </div>
