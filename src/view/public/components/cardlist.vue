@@ -1,80 +1,91 @@
 <template>
-  <div class="wrap"> 
+  <div class="wrap">
     <div class="card-list">
-      <div v-for="(item, index) in items" :key="index" class="card" @click="goToDetail(item.ID)">
-      <div> 
+      <div
+        v-for="(item, index) in items"
+        :key="index"
+        class="card"
+        @click="goToDetail(item.ID)"
+      >
+        <div>
           <div class="image-container">
-            <a data-pswp-width='512' data-pswp-height='512' target='_blank' href="item.icon">
+            <a
+              data-pswp-width="512"
+              data-pswp-height="512"
+              target="_blank"
+              href="item.icon"
+            >
               <img class="card-cover" :src="item.icon" alt="card image" />
             </a>
           </div>
-         <div class="content-container">
-          <h2>{{ item.name }}</h2>
-          <p>{{ item.desc }}</p>
-         </div>
-      </div>
-      <div class="tags">
-      <span  class="tag">{{ item.tags }}</span>
-         <!-- <span v-for="(tag, index) in item.tags" :key="index" class="tag">{{ tag }}</span> -->
+          <div class="content-container">
+            <h2 class="ellipsis" :title="item.name">{{ item.name }}</h2>
+            <p>{{ item.desc }}</p>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">{{ item.tags }}</span>
+          <!-- <span v-for="(tag, index) in item.tags" :key="index" class="tag">{{ tag }}</span> -->
+        </div>
       </div>
     </div>
-   </div>
   </div>
 </template>
 
 <script>
-import { getIndexToolList} from "@/api/tools"
-
+import { getIndexToolList } from '@/api/tools'
 
 export default {
   data() {
     return {
       tag: '',
       keyword: '',
-      items: [],
-    };
+      items: []
+    }
   },
-  mounted(){
-      this.tag =this.$route.query.tag
-      this.getIndexToolList()
+  mounted() {
+    this.tag = this.$route.query.tag
+    this.getIndexToolList()
   },
   watch: {
-     '$route.query.tag': function(){
-    	// 只要categoryId的值发生变化,这个方法就会被调用
-      this.tag =this.$route.query.tag
+    '$route.query.tag': function () {
+      // 只要categoryId的值发生变化,这个方法就会被调用
+      this.tag = this.$route.query.tag
       //重新调用请求数据的方法，刷新页面数据
-      if(this.$route.name == 'Index'){
+      if (this.$route.name == 'Index') {
         this.getIndexToolList()
       }
     },
-    '$route.query.keyword': function(){
-    	// 只要categoryId的值发生变化,这个方法就会被调用
-      this.keyword =this.$route.query.keyword
+    '$route.query.keyword': function () {
+      // 只要categoryId的值发生变化,这个方法就会被调用
+      this.keyword = this.$route.query.keyword
       //重新调用请求数据的方法，刷新页面数据
-      if(this.$route.name == 'Index'){
+      if (this.$route.name == 'Index') {
         this.getIndexToolList()
       }
-    },
+    }
   },
-  methods:{
-    async getIndexToolList(){
-      let toolList =await getIndexToolList({tags: this.tag ,keyword: this.keyword})
+  methods: {
+    async getIndexToolList() {
+      let toolList = await getIndexToolList({
+        tags: this.tag,
+        keyword: this.keyword
+      })
       console.log('toolList', toolList)
-      if(toolList.code == 0){
+      if (toolList.code == 0) {
         this.items = toolList.data.list
       }
     },
-    goToDetail(toolId){
+    goToDetail(toolId) {
       console.log('goToDetail', toolId)
-      this.$router.push({ name:'Detail', query :{id: toolId}})
+      this.$router.push({ name: 'Detail', query: { id: toolId } })
     }
   }
-};
+}
 </script>
 
 <style scoped>
-.wrap{
- 
+.wrap {
 }
 .card-list {
   display: flex;
@@ -99,7 +110,7 @@ export default {
 
 .card:hover {
   /*box-shadow: 4px 4px 12px rgba(150, 145, 137, 0.688);*/
-  transform: translate(0,-5px);
+  transform: translate(0, -5px);
   color: #fafbfd;
   cursor: pointer;
 }
@@ -152,7 +163,12 @@ p {
   margin-right: 8px;
   border-radius: 4px;
 }
-.tag:hover{
+.tag:hover {
   color: #f6f9ff;
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
